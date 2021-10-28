@@ -1,3 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap');
+:root {
+  --light-blue: rgb(88, 216, 173);
+  --white-blue: #c5dadd;
+}
+html {
+  font-family: 'Zen Kurenaido', monospace;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
 body {
   background-color: #363636;
+  height: 100vh;
+  width: 100%;
+}
+
+/* New Project Modal */
+.btn {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.task {
+  position: relative;
+  background-color: var(--white-blue);
+  width: 30rem;
+  border-radius: 5px;
+}
+.task__header {
+  padding: 1.2rem 3rem 1rem;
+  background-color: var(--light-blue);
+  font-size: 1.5rem;
+}
+.task__btn--close {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  font-size: 1.5rem;
+}
+.task__btn--create {
+  background: var(--light-blue);
 }

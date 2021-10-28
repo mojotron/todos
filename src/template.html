@@ -7,6 +7,41 @@
     <title>Todos | to-do list</title>
   </head>
   <body>
-    <div id="main-wrapper"></div>
+    <div class="task">
+      <h2 class="task__header">New Task</h2>
+      <form>
+        <div>
+          <label for="task-title">title</label>
+          <input type="text" placeholder="do stuff" id="task-title" />
+        </div>
+
+        <div>
+          <label for="task-due-date">due date</label>
+          <input type="datetime-local" id="task-due-date" />
+        </div>
+
+        <div>
+          <label for="task-type">task type</label>
+          <select name="" id="">
+            <option value="text">text</option>
+            <option value="list">list</option>
+            <option value="checkbox">checkbox</option>
+          </select>
+          <div class="task__type-wrapper"></div>
+        </div>
+
+        <div>
+          <label for="">priority</label>
+          <select name="" id="">
+            <option value="">low</option>
+            <option value="">moderate</option>
+            <option value="">critical</option>
+          </select>
+        </div>
+
+        <button class="btn task__btn--close">x</button>
+        <button class="btn task__btn--create">create task</button>
+      </form>
+    </div>
   </body>
 </html>
