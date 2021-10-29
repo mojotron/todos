@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap');
 :root {
   --light-blue: rgb(88, 216, 173);
-  --white-blue: #c5dadd;
+  --white-blue: #ecfcff;
+  --text-color: #363636;
+  --G-B-gradient: linear-gradient(90deg, rgb(99, 240, 99), rgb(88, 233, 214));
+  --boarder: 3px solid var(--text-color);
 }
 html {
   font-family: 'Zen Kurenaido', monospace;
@@ -10,18 +13,79 @@ html {
 }
 
 body {
-  background-color: #363636;
+  background-color: var(--white-blue);
+  color: var(--text-color);
+}
+label {
+  font-size: 1.3rem;
+  padding: 0.5rem 0 0.1rem 2rem;
+}
+.main-wrapper {
   height: 100vh;
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 1fr 8fr;
+  grid-template-areas:
+    'logo header'
+    'navigation display';
 }
-
-/* New Project Modal */
-.btn {
-  font-family: inherit;
-  border: none;
-  background: none;
+/*logo*/
+.logo {
+  grid-area: logo;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: var(--boarder);
+}
+.logo__header {
+  font-size: 1.5rem;
+}
+.logo__header__span {
+  font-size: 1.8rem;
+  font-weight: bolder;
+  color: var(--white-blue);
+  background: var(--G-B-gradient);
+  display: inline-block;
+  transform: skew(-10deg, -10deg);
+  padding: 0.3rem;
+}
+/*.header*/
+.header {
+  grid-area: header;
+  position: relative;
+}
+/*nav*/
+.nav {
+  grid-area: navigation;
+  padding-top: 2rem;
+}
+.nav li {
+  height: 1.5rem;
+  box-sizing: border-box;
+  font-size: 1.1rem;
+  padding: 0.2rem 0;
+  margin: 0 auto;
+  text-align: center;
   cursor: pointer;
 }
+.nav li:hover {
+  border-bottom: 1px solid var(--text-color);
+}
+.nav__projects-header {
+  text-align: center;
+  padding: 2rem 0 1rem;
+  font-size: 1.8rem;
+}
+/*display*/
+.display {
+  grid-area: display;
+}
+.display__header {
+  font-size: 2.2rem;
+  padding: 1rem 0 0 2rem;
+}
+/* New Project Modal */
 .task {
   position: relative;
   background-color: var(--white-blue);
@@ -41,4 +105,68 @@ body {
 }
 .task__btn--create {
   background: var(--light-blue);
+}
+/*modal*/
+.modal {
+  height: 10rem;
+  width: 25rem;
+  border: var(--boarder);
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.modal__header {
+  position: relative;
+  background: var(--G-B-gradient);
+  border-bottom: var(--boarder);
+}
+.modal__header_headings {
+  font-size: 1.5rem;
+  padding: 1rem 0 1rem 2rem;
+}
+.modal__form__fields {
+  display: flex;
+  flex-direction: column;
+}
+.form-input {
+  width: 85%;
+  margin: 0 auto;
+}
+/* button */
+.btn {
+  font-family: inherit;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0rem 0.5rem 0.3rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--G-B-gradient);
+  color: var(--white-blue);
+}
+.btn:hover {
+  color: var(--text-color);
+  box-shadow: 0.1rem 0.1rem 0.2rem var(--text-color);
+}
+.btn:active {
+  color: var(--text-color);
+  position: relative;
+  top: 0.2rem;
+  box-shadow: none;
+}
+.btn--create {
+}
+#btn-close {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1rem;
+  border: none;
+  font-family: monospace;
+  font-weight: bolder;
+  background: none;
+  font-size: 1.1rem;
+  color: var(--text-color);
 }

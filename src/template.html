@@ -7,7 +7,52 @@
     <title>Todos | to-do list</title>
   </head>
   <body>
-    <div class="task">
+    <div class="main-wrapper">
+      <div class="logo">
+        <h1 class="logo__header">
+          <span class="logo__header__span">Todos</span> or <br />
+          not <span class="logo__header__span">Todos</span>
+        </h1>
+      </div>
+
+      <div class="header">
+        <button class="btn btn--create">+ new task</button>
+      </div>
+
+      <div class="navigation">
+        <nav class="nav">
+          <ul class="nav__list--main-list">
+            <li>all tasks</li>
+            <li>today</li>
+            <li>7 days</li>
+          </ul>
+          <h2 class="nav__projects-header">projects</h2>
+          <ul class="nav__list--project-list">
+            <li>shoulder rehab</li>
+          </ul>
+          <button class="btn">+ new project</button>
+        </nav>
+      </div>
+
+      <div class="display">
+        <h1 class="display__header">all tasks</h1>
+      </div>
+    </div>
+
+    <div class="modal">
+      <header class="modal__header">
+        <h2 class="modal__header_headings">new project</h2>
+        <button id="btn-close">X</button>
+      </header>
+      <form class="modal__form">
+        <div class="modal__form__fields">
+          <label for="">project name</label>
+          <input class="form-input" type="text" placeholder="..." id="" />
+        </div>
+        <button class="btn btn--create">create</button>
+      </form>
+    </div>
+    <!-- <div class="task">
       <h2 class="task__header">New Task</h2>
       <form>
         <div>
@@ -42,6 +87,6 @@
         <button class="btn task__btn--close">x</button>
         <button class="btn task__btn--create">create task</button>
       </form>
-    </div>
+    </div> -->
   </body>
 </html>
