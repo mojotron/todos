@@ -4,7 +4,8 @@
   --white-blue: #ecfcff;
   --text-color: #363636;
   --G-B-gradient: linear-gradient(90deg, rgb(99, 240, 99), rgb(88, 233, 214));
-  --boarder: 3px solid var(--text-color);
+  --light-gray: #a1a1a1;
+  --boarder: 3px solid var(--light-gray);
 }
 html {
   font-family: 'Zen Kurenaido', monospace;
@@ -15,10 +16,6 @@ html {
 body {
   background-color: var(--white-blue);
   color: var(--text-color);
-}
-label {
-  font-size: 1.3rem;
-  padding: 0.5rem 0 0.1rem 2rem;
 }
 .main-wrapper {
   height: 100vh;
@@ -41,7 +38,7 @@ label {
 .logo__header {
   font-size: 1.5rem;
 }
-.logo__header__span {
+.logo__span {
   font-size: 1.8rem;
   font-weight: bolder;
   color: var(--white-blue);
@@ -60,7 +57,7 @@ label {
   grid-area: navigation;
   padding-top: 2rem;
 }
-.nav li {
+.nav__item {
   height: 1.5rem;
   box-sizing: border-box;
   font-size: 1.1rem;
@@ -69,10 +66,10 @@ label {
   text-align: center;
   cursor: pointer;
 }
-.nav li:hover {
+.nav__item:hover {
   border-bottom: 1px solid var(--text-color);
 }
-.nav__projects-header {
+.nav__header {
   text-align: center;
   padding: 2rem 0 1rem;
   font-size: 1.8rem;
@@ -108,7 +105,7 @@ label {
 }
 /*modal*/
 .modal {
-  height: 10rem;
+  min-height: 10rem;
   width: 25rem;
   border: var(--boarder);
   border-radius: 5px;
@@ -116,26 +113,65 @@ label {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  padding-bottom: 5rem;
+}
+.modal__form {
+  padding-top: 1rem;
 }
 .modal__header {
   position: relative;
   background: var(--G-B-gradient);
   border-bottom: var(--boarder);
 }
-.modal__header_headings {
+.modal__headings {
   font-size: 1.5rem;
   padding: 1rem 0 1rem 2rem;
 }
-.modal__form__fields {
+.modal__field {
   display: flex;
   flex-direction: column;
+  padding-bottom: 0.5rem;
 }
-.form-input {
+.modal__group {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.modal__label {
+  font-size: 1.3rem;
+  padding-left: 2rem;
+  padding-bottom: 0.2rem;
   width: 85%;
+}
+
+.modal__input,
+.modal__select,
+.modal__input--date {
+  color: var(--text-color);
+  font-family: inherit;
+  box-sizing: border-box;
+  background: var(--white-blue);
+  border: none;
+  border: 1px solid var(--light-gray);
+  border-radius: 3px;
+}
+.modal__input {
+  width: 85%;
+  display: block;
+  margin: 2rem;
   margin: 0 auto;
+}
+.modal__input--date {
+  margin-left: 2rem;
+  width: 10.5rem;
+}
+.modal__select {
+  width: 8.5rem;
+  margin-left: 2rem;
 }
 /* button */
 .btn {
+  display: block;
   font-family: inherit;
   cursor: pointer;
   font-size: 1.2rem;
@@ -155,9 +191,21 @@ label {
   top: 0.2rem;
   box-shadow: none;
 }
-.btn--create {
+.btn--open-project {
+  margin: 1rem auto;
 }
-#btn-close {
+.btn--open-task {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1rem;
+}
+.btn--create {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+.btn--close {
   cursor: pointer;
   position: absolute;
   top: 50%;
@@ -165,8 +213,8 @@ label {
   right: 1rem;
   border: none;
   font-family: monospace;
-  font-weight: bolder;
+  font-weight: bold;
   background: none;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text-color);
 }
