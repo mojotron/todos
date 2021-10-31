@@ -61,21 +61,30 @@
       <form class="modal__form">
         <div class="modal__field">
           <label class="modal__label">task name</label>
-          <input class="modal__input" type="text" placeholder="..." />
+          <input
+            class="modal__input"
+            type="text"
+            placeholder="..."
+            id="title"
+          />
         </div>
 
         <div class="modal__group">
           <div class="modal__field">
-            <label class="modal__label">due date</label>
-            <input class="modal__input--date" type="datetime-local" />
+            <label class="modal__label">deadline</label>
+            <input
+              class="modal__input--date"
+              type="datetime-local"
+              id="deadline"
+            />
           </div>
 
           <div class="modal__field">
             <label class="modal__label">priority</label>
-            <select class="modal__select">
-              <option class="modal__option" value="">low</option>
-              <option class="modal__option" value="">moderate</option>
-              <option class="modal__option" value="">critical</option>
+            <select class="modal__select" id="priority">
+              <option class="modal__option" value="low">low</option>
+              <option class="modal__option" value="moderate">moderate</option>
+              <option class="modal__option" value="critical">critical</option>
             </select>
           </div>
         </div>
@@ -83,25 +92,28 @@
         <div class="modal__group">
           <div class="modal__field">
             <label class="modal__label">task type</label>
-            <select class="modal__select">
+            <select class="modal__select select--long" id="type">
               <option class="modal__option" value="text">text</option>
               <option class="modal__option" value="list">list</option>
               <option class="modal__option" value="checkbox">checkbox</option>
             </select>
-            <div class="modal__data-wrapper"></div>
           </div>
 
           <div class="modal__field">
             <label class="modal__label">project</label>
-            <select class="modal__select">
+            <select class="modal__select select--long" id="projectId">
               <option class="modal__option" value="">all</option>
               <option class="modal__option" value="">shoulder rehab</option>
             </select>
-            <div class="modal__data-wrapper"></div>
           </div>
         </div>
 
-        <div class="modal__field"></div>
+        <div class="modal__field">
+          <label class="modal__label">task</label>
+          <div class="modal__data-wrapper" id="data">
+            <textarea class="modal__data-wrapper__text" rows="5"></textarea>
+          </div>
+        </div>
         <button class="btn btn--create">create</button>
       </form>
     </div>

@@ -105,6 +105,7 @@ body {
 }
 /*modal*/
 .modal {
+  background: var(--white-blue);
   min-height: 10rem;
   width: 25rem;
   border: var(--boarder);
@@ -113,7 +114,6 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding-bottom: 5rem;
 }
 .modal__form {
   padding-top: 1rem;
@@ -143,10 +143,11 @@ body {
   padding-bottom: 0.2rem;
   width: 85%;
 }
-
 .modal__input,
 .modal__select,
-.modal__input--date {
+.modal__input--date,
+.modal__data-wrapper__text,
+.modal__input--data {
   color: var(--text-color);
   font-family: inherit;
   box-sizing: border-box;
@@ -163,11 +164,32 @@ body {
 }
 .modal__input--date {
   margin-left: 2rem;
-  width: 10.5rem;
+  width: 11rem;
 }
 .modal__select {
-  width: 8.5rem;
+  width: 8rem;
   margin-left: 2rem;
+}
+.select--long {
+  width: 9.5rem;
+}
+.modal__data-wrapper {
+  margin-left: 2rem;
+}
+.modal__data-wrapper__text {
+  width: 21rem;
+}
+.modal__input--data {
+  width: 21rem;
+}
+.modal__data-wrapper__list {
+  width: 21rem;
+  max-height: 8rem;
+  overflow: scroll;
+  border-bottom: 1px solid var(--light-gray);
+}
+.modal__data-wrapper__list__item {
+  margin-top: 0.5rem;
 }
 /* button */
 .btn {
@@ -201,10 +223,10 @@ body {
   right: 1rem;
 }
 .btn--create {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+  float: right;
+  margin: 0 1rem 1rem 0;
 }
+
 .btn--close {
   cursor: pointer;
   position: absolute;
@@ -217,4 +239,11 @@ body {
   background: none;
   font-size: 1rem;
   color: var(--text-color);
+}
+.btn--add-list-item {
+  font-family: monospace;
+  padding-bottom: 0.2rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  border-radius: 15px;
 }
