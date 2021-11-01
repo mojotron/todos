@@ -50,7 +50,9 @@ body {
 /*.header*/
 .header {
   grid-area: header;
-  position: relative;
+  display: grid;
+  justify-content: flex-end;
+  align-items: center;
 }
 /*nav*/
 .nav {
@@ -217,16 +219,13 @@ body {
   margin: 1rem auto;
 }
 .btn--open-task {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 1rem;
+  float: right;
+  margin: 1rem 1rem 0 0;
 }
 .btn--create {
   float: right;
   margin: 0 1rem 1rem 0;
 }
-
 .btn--close {
   cursor: pointer;
   position: absolute;
