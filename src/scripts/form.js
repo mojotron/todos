@@ -5,16 +5,16 @@ export default class Form {
     document.querySelector('.modal').remove();
   }
 
-  static createBtnHandler() {
+  static createBtnHandler(handler) {
     const validate = this.validateInputs();
     if (!validate) return;
     const dataType = this.validateDataType();
     const title = document.querySelector('[data-input="title"]').value;
     const dataObject = { title };
     if (dataType === 'project') {
-      alert('new project');
       this.closeBtnHandler();
-      console.log(dataObject); //return this
+      handler(dataObject);
+      return; //return this
     }
     const deadline = document.querySelector('[data-input="deadline"]').value;
     const priority = document.querySelector('[data-input="priority"]').value;
@@ -33,21 +33,11 @@ export default class Form {
       );
       dataObject.data = listItems;
     }
-
-    console.log(dataObject);
-    //TODO GET DATA
-    // const title = document.querySelector('[data-input="title"]');
-    // const deadline = document.querySelector('[data-input="deadline"]');
-    // const priority = document.querySelector('[data-input="priority"]');
-    // const type = document.querySelector('[data-input="type"]');
-    // const text = document.querySelector('[data-input="text"]');
-    //
-    // const projectId = document.querySelector('[data-input="projectId"]');
     this.closeBtnHandler();
-    //return object
+    handler(dataObject);
+    return;
   }
 
-  //TODO validate input
   static validateDataType() {
     const project = document.querySelector('.modal__headings');
     if (project.textContent === 'new project') return 'project';
@@ -59,11 +49,11 @@ export default class Form {
     const requiredFields = document.querySelectorAll('.required-input');
     for (const field of requiredFields) {
       if (field.dataset.input === 'title' && field.value.trim() === '') {
-        alert('Please input title!');
+        alert('title field is required');
         return false;
       }
       if (field.dataset.input === 'text' && field.value.trim() === '') {
-        alert('Insert text in task field');
+        alert('text task field is required');
         return false;
       }
       if (field.dataset.input === 'list') {
@@ -72,7 +62,7 @@ export default class Form {
           .querySelector('li');
 
         if (!listItem) {
-          alert('Enter at least 1 item');
+          alert('at least one list item is required');
           return false;
         }
       }
@@ -80,7 +70,7 @@ export default class Form {
     return true;
   }
 
-  static render(type) {
+  static render(type, handler) {
     if (document.querySelector('.modal'))
       document.querySelector('.modal').remove();
     const modal = document.createElement('div');
@@ -104,7 +94,7 @@ export default class Form {
       'click',
       function (e) {
         e.preventDefault();
-        this.createBtnHandler();
+        this.createBtnHandler(handler);
       }.bind(this)
     );
 

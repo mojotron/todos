@@ -17,6 +17,7 @@ body {
   background-color: var(--white-blue);
   color: var(--text-color);
 }
+
 .main-wrapper {
   height: 100vh;
   width: 100%;
@@ -86,24 +87,33 @@ body {
 }
 /* New Project Modal */
 .task {
-  position: relative;
-  background-color: var(--white-blue);
   width: 30rem;
+  margin: 0.3rem auto;
+  border: var(--boarder);
+  border-width: 1px;
   border-radius: 5px;
 }
 .task__header {
-  padding: 1.2rem 3rem 1rem;
-  background-color: var(--light-blue);
+  padding: 0.7rem 3rem;
+  background: var(--G-B-gradient);
   font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  /* border-radius: 10px; */
 }
-.task__btn--close {
-  position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-  font-size: 1.5rem;
+.task__option {
+  width: 5rem;
+  display: flex;
+  justify-content: space-between;
 }
-.task__btn--create {
-  background: var(--light-blue);
+.task__option__item {
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+.task__body {
+  padding: 0.8rem 1rem 1.5rem;
+  font-size: 1.1rem;
 }
 /*modal*/
 .modal {
