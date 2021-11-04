@@ -81,7 +81,11 @@ export default class Form {
         <button class="btn--close">X</button>
       </header>
       <form class="modal__form">
-        ${type === 'project' ? FormFieldsHtml.project : FormFieldsHtml.task}
+        ${
+          type === 'project'
+            ? FormFieldsHtml.renderProject()
+            : FormFieldsHtml.renderTask()
+        }
         <button class="btn btn--create">create</button>
       </form>`;
 

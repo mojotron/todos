@@ -1,10 +1,13 @@
+import projects from './projects.js';
 export default class FormFieldsHtml {
-  static project = `
+  static renderProject() {
+    return `
     <div class="modal__field">
       <label class="modal__label">project name</label>
       <input class="modal__input required-input" type="text" placeholder="..." data-input="title"/>
     </div>
   `;
+  }
 
   static textAreaHtml = `
     <textarea 
@@ -13,7 +16,19 @@ export default class FormFieldsHtml {
       data-input="text"></textarea>
   `;
 
-  static task = `
+  static projectOptions(projects) {
+    return projects
+      .map((project) => {
+        return `
+        <option class="modal__option" value="${project}">
+          ${project}
+        </option>`;
+      })
+      .join('\n');
+  }
+
+  static renderTask() {
+    return `
     <div class="modal__field">
       <label class="modal__label">task name</label>
       <input
@@ -69,12 +84,10 @@ export default class FormFieldsHtml {
       <div class="modal__field">
         <label class="modal__label">project</label>
         <select class="modal__select select--long" data-input="projectId">
-          <option class="modal__option" value="">
+          <option class="modal__option" value="all">
             all
           </option>
-          <option class="modal__option" value="">
-            shoulder rehab
-          </option>
+          ${this.projectOptions(projects.getProjects())}
         </select>
       </div>
     </div>
@@ -86,6 +99,7 @@ export default class FormFieldsHtml {
       </div>
     </div>
   `;
+  }
 
   static listHtml = `
     <input class="modal__input--data" type="text">
