@@ -1,4 +1,4 @@
-import FormFieldsHtml from './form-input-html-module';
+import FormHelperModule from './form-helper-module';
 
 export default class Form {
   static closeBtnHandler() {
@@ -19,9 +19,11 @@ export default class Form {
     const deadline = document.querySelector('[data-input="deadline"]').value;
     const priority = document.querySelector('[data-input="priority"]').value;
     const type = document.querySelector('[data-input="type"]').value;
+    const projectId = document.querySelector('[data-input="projectId"]').value;
     dataObject.deadline = deadline;
     dataObject.priority = priority;
     dataObject.type = type;
+    dataObject.projectId = projectId;
     if (dataType === 'text') {
       const text = document.querySelector('[data-input="text"]').value;
       dataObject.data = text;
@@ -83,8 +85,8 @@ export default class Form {
       <form class="modal__form">
         ${
           type === 'project'
-            ? FormFieldsHtml.renderProject()
-            : FormFieldsHtml.renderTask()
+            ? FormHelperModule.renderProject()
+            : FormHelperModule.renderTask()
         }
         <button class="btn btn--create">create</button>
       </form>`;
@@ -93,6 +95,7 @@ export default class Form {
     //add event listeners
     const closeBtn = modal.querySelector('.btn--close');
     closeBtn.addEventListener('click', this.closeBtnHandler);
+
     const createBtn = modal.querySelector('.btn--create');
     createBtn.addEventListener(
       'click',
@@ -109,9 +112,9 @@ export default class Form {
       const temp = changeType.options[changeType.selectedIndex].value;
       data.innerHTML = '';
       if (temp === 'text') {
-        data.innerHTML = FormFieldsHtml.textAreaHtml;
+        data.innerHTML = FormHelperModule.textAreaHtml;
       } else {
-        data.innerHTML = FormFieldsHtml.listHtml;
+        data.innerHTML = FormHelperModule.listHtml;
         const addListBtn = data.querySelector('button');
         const listInput = data.querySelector('input');
         const dataList = data.querySelector('ul');
@@ -120,7 +123,7 @@ export default class Form {
           if (listInput.value === '') return;
           const listItem = document.createElement('li');
           listItem.className = 'modal__data-wrapper__list__item';
-          dataList.append(FormFieldsHtml.getListItem(listInput.value));
+          dataList.append(FormHelperModule.getListItem(listInput.value));
           listInput.value = '';
         });
       }

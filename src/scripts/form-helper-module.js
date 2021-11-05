@@ -1,5 +1,5 @@
 import projects from './projects.js';
-export default class FormFieldsHtml {
+export default class FormHelperModule {
   static renderProject() {
     return `
     <div class="modal__field">
@@ -84,7 +84,7 @@ export default class FormFieldsHtml {
       <div class="modal__field">
         <label class="modal__label">project</label>
         <select class="modal__select select--long" data-input="projectId">
-          <option class="modal__option" value="all">
+          <option class="modal__option" value="all tasks">
             all
           </option>
           ${this.projectOptions(projects.getProjects())}

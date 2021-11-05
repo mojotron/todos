@@ -1,4 +1,4 @@
-class TaskDOM {
+class Task {
   render(taskObject) {
     const taskElement = document.createElement('div');
     taskElement.className = 'task';
@@ -53,10 +53,6 @@ class TaskDOM {
       })
       .join('\n');
   }
-  //text
-  //list
-  //checkpoint
 }
 //list &#10022;
-//checkbox &#9744; &#9745;
-export default new TaskDOM();
+export default new Task();
