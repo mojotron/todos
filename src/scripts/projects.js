@@ -2,15 +2,18 @@ class Projects {
   #projects = [];
 
   addProject(title) {
-    if (this.#projects.includes(title)) {
-      alert('there is already project with name ' + title);
-      return;
+    if (localStorage.getItem('taskProjects'))
+      this.#projects = this.getProjects();
+    //create new project if user inputs project with same name
+    while (this.#projects.includes(title)) {
+      title = title + '&#9733;';
     }
     this.#projects.push(title);
+    localStorage.setItem('taskProjects', JSON.stringify(this.#projects));
   }
 
   getProjects() {
-    return [...this.#projects];
+    return JSON.parse(localStorage.getItem('taskProjects')) || this.#projects;
   }
 }
 

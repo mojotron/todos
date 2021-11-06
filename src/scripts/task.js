@@ -2,6 +2,7 @@ class Task {
   render(taskObject) {
     const taskElement = document.createElement('div');
     taskElement.className = 'task';
+    taskElement.dataset.taskId = taskObject.taskId;
     taskElement.innerHTML = `
     <header class="task__header">
       <h2 class="task__headings">${taskObject.title}</h2>
@@ -10,7 +11,7 @@ class Task {
           <li class="task__option__item">
             <span class="task__date">22/05/2021</span> &#128467;
           </li>
-          <li class="task__option__item">&#9873;</li>
+          <li class="task__option__item ">&#9873;</li>
           <li class="task__option__item">&#8646;</li>
           <li class="task__option__item">&#10006;</li>
         </ul>

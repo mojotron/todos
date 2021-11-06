@@ -24,6 +24,7 @@ export default class Form {
     dataObject.priority = priority;
     dataObject.type = type;
     dataObject.projectId = projectId;
+    dataObject.taskId = Date.now();
     if (dataType === 'text') {
       const text = document.querySelector('[data-input="text"]').value;
       dataObject.data = text;
