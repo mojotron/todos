@@ -1,5 +1,7 @@
+import FormatDateModule from './date-formatter-module';
 class Task {
   render(taskObject) {
+    console.log(taskObject);
     const taskElement = document.createElement('div');
     taskElement.className = 'task';
     taskElement.dataset.taskId = taskObject.taskId;
@@ -8,24 +10,24 @@ class Task {
       <h2 class="task__headings">${taskObject.title}</h2>
       <nav>
         <ul class="task__option">
-          <li class="task__option__item">
-            <span class="task__date">22/05/2021</span> &#128467;
-          </li>
-          <li class="task__option__item ">&#9873;</li>
-          <li class="task__option__item">&#8646;</li>
-          <li class="task__option__item">&#10006;</li>
+        <span class="task__date">${
+          taskObject.deadline
+            ? FormatDateModule.formatDateString(taskObject.deadline)
+            : 'no deadline'
+        }</span>
+          <li class="task__option__item"><button class="btn--task" title="change deadline">&#128467;</button></li>
+          <li class="task__option__item "><button class="btn--task" title="change priority">&#9873;</button></li>
+          <li class="task__option__item"><button class="btn--task" title="change project">&#8646;</button></li>
+          <li class="task__option__item"><button class="btn--task" title="delete task">&#10006;</button></li>
         </ul>
       </nav>
     </header>
 
-  <div class="task__body">
-    <div class="task__body__item task__item--text">
+    <div class="task__body">
       ${this.setData(taskObject.type, taskObject.data)}
-      <p>&#9998;</p>
     </div>
-    <div class="task__body__item"></div>
-    <p> Fallow map and find secret key</p>
     `;
+
     return taskElement;
   }
 
@@ -36,23 +38,46 @@ class Task {
   }
 
   createText(data) {
-    return ` <p>${data}</p>`;
+    return `
+    <div class="task__body__item task__item--text">
+      <p>${data}</p>
+      <button class="btn--task btn--edit" title="edit text">&#9998;</button>
+    </div>
+    `;
   }
 
   createList(data) {
-    return data
+    const listItems = data
       .map((item) => {
-        return `<p><span>&#10022;</span> ${item}</p>`;
+        return `
+          <div class="task__item--list-item">
+            <p>&#10022; ${item}</p>
+            <button class="btn--task" title="edit item">&#10006;</button>
+          </div>`;
       })
       .join('\n');
+    return `
+    <div class="task__body__item task__item--list">
+      <button class="btn--task btn--edit" title="add item">+</button>
+      ${listItems}
+    </div>`;
   }
 
   createCheckbox(data) {
-    return data
+    const listItems = data
       .map((item) => {
-        return `<p><input type="checkbox"> ${item}</p>`;
+        return `
+          <div class="task__item--checkbox-item">
+            <p><input type="checkbox"> ${item}</p>
+            <button class="btn--task" title="edit item">&#10006;</button>
+          </div>`;
       })
       .join('\n');
+    return `
+    <div class="task__body__item task__item--checkbox">
+      <button class="btn--task btn--edit" title="add item">+</button>
+      ${listItems}
+    </div>`;
   }
 }
 //list &#10022;
