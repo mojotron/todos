@@ -27,9 +27,11 @@ class Task {
       ${this.setData(taskObject.type, taskObject.data)}
     </div>
     `;
-
     return taskElement;
   }
+  //button handlers
+  //1. delete task
+  //2. change priority
 
   setData(type, data) {
     if (type === 'text') return this.createText(data);

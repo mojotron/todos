@@ -41,15 +41,27 @@ btnOpenProject.addEventListener('click', function () {
 //Creating new task
 //- data flow => open form -> user submit data ->
 //-> form returns object to controller -> add object to tasks ->
+
+const taskObjectController = function (id, action) {
+  console.log(id, action);
+  if (action === 'delete task') deleteTaskController(id);
+};
+
+const deleteTaskController = function (id) {
+  tasks.deleteTask(+id);
+  tasks.render(displayHeadings.dataset.id);
+};
 const taskDataController = function (data) {
   tasks.insertTask(data);
   if (data.projectId === displayHeadings.dataset.id)
     tasks.render(data.projectId);
+
+  tasks.taskObjectClickHandler(taskObjectController);
 };
 
 btnOpenTask.addEventListener('click', function () {
   Form.render('task', taskDataController);
 });
 
-// localStorage.clear('tasks');
-// localStorage.clear('taskProjects');
+//task handlers
+tasks.taskObjectClickHandler(taskObjectController);

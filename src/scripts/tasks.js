@@ -1,21 +1,23 @@
 import task from './task.js';
+import Storage from './storage.js';
 class Tasks {
   #tasks = [];
   #parentElement = document.querySelector('.display__wrapper');
-
+  constructor() {
+    this.#tasks = Storage.getTasks();
+  }
   //local storage
   insertTask(task) {
-    if (localStorage.getItem('tasks')) this.#tasks = this.getTasks();
     this.#tasks.push(task);
-    localStorage.setItem('tasks', JSON.stringify(this.#tasks));
+    Storage.setTasks(this.#tasks);
   }
 
   getTasks() {
-    return JSON.parse(localStorage.getItem('tasks')) || this.#tasks;
+    return this.#tasks;
   }
 
   filterTasksByProjectId(projectId) {
-    return this.getTasks().filter((task) => task.projectId === projectId);
+    return this.#tasks.filter((task) => task.projectId === projectId);
   }
 
   filterTasksByDate() {}
@@ -28,6 +30,24 @@ class Tasks {
     for (const taskObj of filtered) {
       this.#parentElement.append(task.render(taskObj));
     }
+  }
+
+  taskObjectClickHandler(handler) {
+    this.#parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--task');
+      if (!btn) return;
+      const id = e.target.closest('.task').dataset.taskId;
+      const action = btn.title;
+      handler(id, action);
+    });
+  }
+
+  deleteTask(taskId) {
+    console.log('task id', taskId);
+    this.#tasks = this.#tasks.filter((task) => task.taskId !== taskId);
+    console.log('deleting');
+    console.log(this.#tasks);
+    Storage.setTasks(this.#tasks);
   }
 }
 
