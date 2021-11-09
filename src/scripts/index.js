@@ -6,6 +6,7 @@ import Form from './form.js';
 import tasks from './tasks.js';
 import projects from './projects.js';
 import Navigation from './navigation.js';
+import task from './task';
 
 //Navigation
 //get id of when click on navigation
@@ -42,9 +43,11 @@ btnOpenProject.addEventListener('click', function () {
 //- data flow => open form -> user submit data ->
 //-> form returns object to controller -> add object to tasks ->
 
-const taskObjectController = function (id, action) {
-  console.log(id, action);
+const taskObjectController = function (id, action, property) {
   if (action === 'delete task') deleteTaskController(id);
+  if (action === 'change priority') {
+    task.renderPriorityModal();
+  }
 };
 
 const deleteTaskController = function (id) {

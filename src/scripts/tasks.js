@@ -38,15 +38,22 @@ class Tasks {
       if (!btn) return;
       const id = e.target.closest('.task').dataset.taskId;
       const action = btn.title;
+      if (action === 'change priority') {
+        handler(id, action, priority);
+      }
       handler(id, action);
     });
   }
 
   deleteTask(taskId) {
-    console.log('task id', taskId);
     this.#tasks = this.#tasks.filter((task) => task.taskId !== taskId);
-    console.log('deleting');
-    console.log(this.#tasks);
+    Storage.setTasks(this.#tasks);
+  }
+
+  updateTask(taskId, property, newValue) {
+    const target = this.#tasks.find((task) => task.taskId === taskId);
+    if (!target) return;
+    target[property] = newValue;
     Storage.setTasks(this.#tasks);
   }
 }

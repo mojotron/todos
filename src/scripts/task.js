@@ -1,7 +1,6 @@
 import FormatDateModule from './date-formatter-module';
 class Task {
   render(taskObject) {
-    console.log(taskObject);
     const taskElement = document.createElement('div');
     taskElement.className = 'task';
     taskElement.dataset.taskId = taskObject.taskId;
@@ -16,7 +15,11 @@ class Task {
             : 'no deadline'
         }</span>
           <li class="task__option__item"><button class="btn--task" title="change deadline">&#128467;</button></li>
-          <li class="task__option__item "><button class="btn--task" title="change priority">&#9873;</button></li>
+          <li class="task__option__item "><button class="btn--task priority-${
+            taskObject.priority
+          }" data-priority="${
+      taskObject.priority
+    }" title="change priority">&#9873;</button></li>
           <li class="task__option__item"><button class="btn--task" title="change project">&#8646;</button></li>
           <li class="task__option__item"><button class="btn--task" title="delete task">&#10006;</button></li>
         </ul>
@@ -27,11 +30,31 @@ class Task {
       ${this.setData(taskObject.type, taskObject.data)}
     </div>
     `;
+
+    const btnPriority = taskElement.querySelector('[title="change priority"]');
+    btnPriority.addEventListener(
+      'click',
+      function (e) {
+        this.renderPriorityModal(btnPriority.offsetLeft, btnPriority.offsetTop);
+      }.bind(this)
+    );
     return taskElement;
   }
-  //button handlers
-  //1. delete task
-  //2. change priority
+  //priority modal
+  renderPriorityModal(x, y) {
+    const modal = document.createElement('div');
+    modal.className = 'priority-modal';
+    modal.style.top = `${y}px`;
+    modal.style.left = `${x}px`;
+    modal.innerHTML = `
+      <ul>
+        <li class="priority-low" data-priority="low">&#9873;</li>
+        <li class="priority-moderate" data-priority="moderate">&#9873;</li>
+        <li class="priority-critical" data-priority="critical">&#9873;</li>
+      </ul>
+    `;
+    document.body.append(modal);
+  }
 
   setData(type, data) {
     if (type === 'text') return this.createText(data);

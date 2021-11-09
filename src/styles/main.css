@@ -6,6 +6,9 @@
   --G-B-gradient: linear-gradient(90deg, rgb(99, 240, 99), rgb(88, 233, 214));
   --light-gray: #a1a1a1;
   --boarder: 3px solid var(--light-gray);
+  --priority-low: rgb(230, 230, 230);
+  --priority-moderate: rgb(255, 238, 0);
+  --priority-critical: rgb(253, 14, 14);
 }
 html {
   font-family: 'Mohave', monospace;
@@ -289,4 +292,25 @@ body {
   top: -0.5rem;
   right: 0;
   transform: scale(1.2) rotateZ(90deg);
+}
+/**/
+.priority-low {
+  color: var(--priority-low);
+}
+.priority-moderate {
+  color: var(--priority-moderate);
+}
+.priority-critical {
+  color: var(--priority-critical);
+}
+.priority-modal {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  width: 2rem;
+  font-size: 1.3rem;
+  background: var(--text-color);
+  border-radius: 10px;
 }
