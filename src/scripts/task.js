@@ -85,6 +85,14 @@ class Task {
         temp.selectionStart = temp.value.length;
       });
     }
+    const btnAddItem = taskElement.querySelector('[title="add item"]');
+    if (btnAddItem) {
+      btnAddItem.addEventListener('click', () => alert('add'));
+    }
+    const btnEditItem = taskElement.querySelector('[title="edit item"]');
+    if (btnEditItem) {
+      btnEditItem.addEventListener('click', () => alert('edit item'));
+    }
 
     return taskElement;
   }
