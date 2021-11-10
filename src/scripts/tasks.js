@@ -38,9 +38,9 @@ class Tasks {
       if (!btn) return;
       const id = e.target.closest('.task').dataset.taskId;
       const action = btn.title;
-      if (action === 'change priority') {
-        handler(id, action, priority);
-      }
+      // if (action === 'change priority') {
+      //   handler(id, action, priority);
+      // }
       handler(id, action);
     });
   }

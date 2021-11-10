@@ -45,9 +45,9 @@ btnOpenProject.addEventListener('click', function () {
 
 const taskObjectController = function (id, action, property) {
   if (action === 'delete task') deleteTaskController(id);
-  if (action === 'change priority') {
-    task.renderPriorityModal();
-  }
+  // if (action === 'change priority') {
+  //   task.renderPriorityModal();
+  // }
 };
 
 const deleteTaskController = function (id) {

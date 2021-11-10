@@ -181,7 +181,9 @@ body {
 .modal__select,
 .modal__input--date,
 .modal__data-wrapper__text,
-.modal__input--data {
+.modal__input--data,
+.deadline__modal__input,
+.btn--deadline-modal {
   color: var(--text-color);
   font-family: inherit;
   box-sizing: border-box;
@@ -303,14 +305,44 @@ body {
 .priority-critical {
   color: var(--priority-critical);
 }
-.priority-modal {
+.priority__modal,
+.projects__modal {
   position: absolute;
+  margin-top: -1.7rem;
+  color: var(--white-blue);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5rem;
-  width: 2rem;
+  padding: 0.3rem 0.5rem;
   font-size: 1.3rem;
   background: var(--text-color);
-  border-radius: 10px;
+  border-radius: 5px;
+}
+.projects__modal {
+  font-size: 1.1rem;
+}
+.projects__modal__item {
+  padding-bottom: 0.3rem;
+}
+.task__option_item--deadline,
+.deadline-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.deadline__modal__input {
+  cursor: pointer;
+}
+.btn--deadline-modal {
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-left: -5px;
+}
+.task__textarea {
+  width: 100%;
+  border: none;
+}
+.btn--update-textarea {
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.3rem 0.2rem;
 }

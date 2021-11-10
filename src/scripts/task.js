@@ -14,7 +14,7 @@ class Task {
             ? FormatDateModule.formatDateString(taskObject.deadline)
             : 'no deadline'
         }</span>
-          <li class="task__option__item"><button class="btn--task" title="change deadline">&#128467;</button></li>
+          <li class="task__option__item task__option_item--deadline"><button class="btn--task" title="change deadline">&#128467;</button></li>
           <li class="task__option__item "><button class="btn--task priority-${
             taskObject.priority
           }" data-priority="${
@@ -34,26 +34,105 @@ class Task {
     const btnPriority = taskElement.querySelector('[title="change priority"]');
     btnPriority.addEventListener(
       'click',
-      function (e) {
-        this.renderPriorityModal(btnPriority.offsetLeft, btnPriority.offsetTop);
+      function () {
+        this.removeModal();
+
+        this.renderModal(
+          btnPriority.closest('li'),
+          'priority__modal',
+          this.priorityModal()
+        );
       }.bind(this)
     );
+    const btnDeadline = taskElement.querySelector('[title="change deadline"]');
+    btnDeadline.addEventListener(
+      'click',
+      function () {
+        this.removeModal();
+        this.renderModal(
+          btnDeadline.closest('li'),
+          'deadline__modal',
+          this.deadlineModal()
+        );
+      }.bind(this)
+    );
+    const btnProjects = taskElement.querySelector('[title="change project"]');
+    btnProjects.addEventListener(
+      'click',
+      function () {
+        this.removeModal();
+
+        this.renderModal(
+          btnProjects.closest('li'),
+          'projects__modal',
+          this.projectsModal(['all', 'running', 'coding'])
+        );
+      }.bind(this)
+    );
+
+    const btnEditText = taskElement.querySelector('[title="edit text"]');
+    if (btnEditText) {
+      btnEditText.addEventListener('click', function (e) {
+        const para = taskElement.querySelector('.task__paragraph');
+        const currentContent = para.textContent;
+        para.innerHTML = `
+          <textarea class="task__textarea">${currentContent}</textarea>
+          <button class="btn btn--update-textarea">&#8626;</button>
+        `;
+        const temp = document.querySelector('.task__textarea');
+        //set focus to end of text
+        temp.focus();
+        temp.selectionStart = temp.value.length;
+      });
+    }
+
     return taskElement;
   }
   //priority modal
-  renderPriorityModal(x, y) {
+  removeModal() {
+    // if (!document.querySelector(selector)) return;
+    if (document.querySelector('.priority__modal'))
+      document.querySelector('.priority__modal').remove();
+    if (document.querySelector('.deadline__modal'))
+      document.querySelector('.deadline__modal').remove();
+    if (document.querySelector('.projects__modal'))
+      document.querySelector('.projects__modal').remove();
+  }
+  renderModal(element, className, html) {
     const modal = document.createElement('div');
-    modal.className = 'priority-modal';
-    modal.style.top = `${y}px`;
-    modal.style.left = `${x}px`;
-    modal.innerHTML = `
+    modal.className = className;
+    modal.innerHTML = html;
+    element.append(modal);
+  }
+
+  priorityModal() {
+    return `
       <ul>
         <li class="priority-low" data-priority="low">&#9873;</li>
         <li class="priority-moderate" data-priority="moderate">&#9873;</li>
         <li class="priority-critical" data-priority="critical">&#9873;</li>
       </ul>
     `;
-    document.body.append(modal);
+  }
+
+  projectsModal(projects) {
+    const projectList = projects
+      .map((ele) => `<li class="projects__modal__item">${ele}</li>`)
+      .join('\n');
+    return `
+      <ul class="projects__modal__list">
+        ${projectList}
+      </ul>
+    `;
+  }
+
+  deadlineModal() {
+    return `
+      <div class="deadline__modal">
+        <input class="deadline__modal__input" type="datetime-local">
+        <button class="btn--deadline-modal">&#8626;</button>
+      </div>
+    `;
   }
 
   setData(type, data) {
@@ -65,7 +144,7 @@ class Task {
   createText(data) {
     return `
     <div class="task__body__item task__item--text">
-      <p>${data}</p>
+      <p class="task__paragraph">${data}</p>
       <button class="btn--task btn--edit" title="edit text">&#9998;</button>
     </div>
     `;
@@ -77,7 +156,10 @@ class Task {
         return `
           <div class="task__item--list-item">
             <p>&#10022; ${item}</p>
-            <button class="btn--task" title="edit item">&#10006;</button>
+            <div>
+              <button class="btn--task" title="edit item">&#9998;</button>
+              <button class="btn--task" title="delete item">&#10006;</button>
+            </div>
           </div>`;
       })
       .join('\n');
@@ -94,7 +176,10 @@ class Task {
         return `
           <div class="task__item--checkbox-item">
             <p><input type="checkbox"> ${item}</p>
-            <button class="btn--task" title="edit item">&#10006;</button>
+            <div>
+              <button class="btn--task" title="edit item">&#9998;</button>
+              <button class="btn--task" title="delete item">&#10006;</button>
+            </div>
           </div>`;
       })
       .join('\n');
@@ -105,5 +190,4 @@ class Task {
     </div>`;
   }
 }
-//list &#10022;
 export default new Task();
