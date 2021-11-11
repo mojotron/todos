@@ -295,6 +295,13 @@ body {
   right: 0;
   transform: scale(1.2) rotateZ(90deg);
 }
+.btn--delete-project {
+  cursor: crosshair;
+  border: none;
+  background: none;
+  float: right;
+  padding-right: 1rem;
+}
 /**/
 .priority-low {
   color: var(--priority-low);

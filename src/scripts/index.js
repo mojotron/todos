@@ -8,6 +8,11 @@ import projects from './projects.js';
 import Navigation from './navigation.js';
 import task from './task';
 
+//open object form
+//create new project
+//delete project and associated task
+//switch project display
+
 //Navigation
 //get id of when click on navigation
 const displayHeadings = document.querySelector('.display__header');

@@ -87,11 +87,36 @@ class Task {
     }
     const btnAddItem = taskElement.querySelector('[title="add item"]');
     if (btnAddItem) {
-      btnAddItem.addEventListener('click', () => alert('add'));
+      btnAddItem.addEventListener('click', function (e) {
+        const temp = taskElement.querySelector('.task__body');
+        const input = document.createElement('div');
+        input.innerHTML = `
+          <input type="text">
+          <button>add</button>
+        `;
+        temp.append(input);
+      });
     }
-    const btnEditItem = taskElement.querySelector('[title="edit item"]');
+    const btnEditItem = taskElement.querySelectorAll('[title="edit item"]');
     if (btnEditItem) {
-      btnEditItem.addEventListener('click', () => alert('edit item'));
+      btnEditItem.forEach((btn) => {
+        btn.addEventListener('click', function (e) {
+          //remove input for update item
+          taskElement.querySelectorAll('.task__item__data').forEach((ele) => {
+            const input = ele.querySelector('input');
+            if (input) ele.textContent = input.placeholder;
+          });
+
+          const temp = e.target
+            .closest('.task__body__item')
+            .querySelector('.task__item__data');
+
+          temp.innerHTML = `
+          <input type="text" placeholder="${temp.textContent}">
+          <button>update</button>
+          `;
+        });
+      });
     }
 
     return taskElement;
@@ -162,8 +187,8 @@ class Task {
     const listItems = data
       .map((item) => {
         return `
-          <div class="task__item--list-item">
-            <p>&#10022; ${item}</p>
+          <div class="task__body__item task__item--list-item">
+            <p>&#10022; <span class="task__item__data">${item}</span></p>
             <div>
               <button class="btn--task" title="edit item">&#9998;</button>
               <button class="btn--task" title="delete item">&#10006;</button>
@@ -172,7 +197,7 @@ class Task {
       })
       .join('\n');
     return `
-    <div class="task__body__item task__item--list">
+    <div class="task__item--list">
       <button class="btn--task btn--edit" title="add item">+</button>
       ${listItems}
     </div>`;
@@ -182,8 +207,8 @@ class Task {
     const listItems = data
       .map((item) => {
         return `
-          <div class="task__item--checkbox-item">
-            <p><input type="checkbox"> ${item}</p>
+          <div class="task__body__item task__item--checkbox-item">
+            <p><input type="checkbox"><spam class="task__item__data">${item}</spam></p>
             <div>
               <button class="btn--task" title="edit item">&#9998;</button>
               <button class="btn--task" title="delete item">&#10006;</button>
@@ -192,7 +217,7 @@ class Task {
       })
       .join('\n');
     return `
-    <div class="task__body__item task__item--checkbox">
+    <div class="task__item--checkbox">
       <button class="btn--task btn--edit" title="add item">+</button>
       ${listItems}
     </div>`;
