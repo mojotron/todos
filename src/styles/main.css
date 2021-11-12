@@ -296,11 +296,13 @@ body {
   transform: scale(1.2) rotateZ(90deg);
 }
 .btn--delete-project {
+  color: var(--text-color);
   cursor: crosshair;
   border: none;
   background: none;
   float: right;
-  padding-right: 1rem;
+  padding: 0;
+  margin-right: 0.5rem;
 }
 /**/
 .priority-low {

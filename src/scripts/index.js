@@ -7,69 +7,72 @@ import tasks from './tasks.js';
 import projects from './projects.js';
 import Navigation from './navigation.js';
 import task from './task';
+import {
+  PROJECT,
+  BTN_NEW_PROJECT,
+  TASK,
+  BTN_NEW_TASK,
+  MAIN_HEADINGS,
+} from './config.js';
 
-//open object form
-//create new project
-//delete project and associated task
-//switch project display
-
-//Navigation
-//get id of when click on navigation
-const displayHeadings = document.querySelector('.display__header');
-tasks.render('all tasks');
-
-const addLinkClickController = function (projectId) {
-  displayHeadings.textContent = projectId;
-  displayHeadings.dataset.id = projectId;
-  tasks.render(projectId);
+//open object form, pass handler for form creation, returns project object
+BTN_NEW_PROJECT.addEventListener('click', function () {
+  Form.render(PROJECT, createProjectController);
+});
+//create new project controller, add project to project list
+const createProjectController = function (projectObject) {
+  projects.addProject(projectObject.title);
+  displayProjectsController(projects.getProjects());
 };
-const navigation = new Navigation(addLinkClickController);
+//display projects with navigation class //TODO helper class or solo
+const changeMainHeadings = function (projectId) {
+  MAIN_HEADINGS.textContent = projectId;
+  MAIN_HEADINGS.dataset.id = projectId;
+};
+const switchProjectHandler = function (projectId) {
+  changeMainHeadings(projectId);
+};
+
+const deleteProjectHandler = function (projectId) {
+  projects.deleteProject(projectId);
+  displayProjectsController(projects.getProjects());
+  //TODO delete associated tasks
+  //TODO update display after deletion if that project is displayed
+};
+//TODO init
+const navigation = new Navigation(switchProjectHandler, deleteProjectHandler);
 navigation.render(projects.getProjects());
-//Form opening buttons
-const btnOpenProject = document.querySelector('.btn--open-project');
-const btnOpenTask = document.querySelector('.btn--open-task');
-//Creating new project
-// - data flow => open form -> user submit data -> form class returns
-// task object to controller via handler -> create new task with this object ->
-// with project list render new navigation links
-const projectListController = function (projectNames) {
+//display projects
+const displayProjectsController = function (projectNames) {
   navigation.render(projectNames);
 };
 
-const projectDataController = function (projectObject) {
-  projects.addProject(projectObject.title);
-  projectListController(projects.getProjects());
-};
-
-btnOpenProject.addEventListener('click', function () {
-  Form.render('project', projectDataController);
-});
 //Creating new task
 //- data flow => open form -> user submit data ->
 //-> form returns object to controller -> add object to tasks ->
 
-const taskObjectController = function (id, action, property) {
-  if (action === 'delete task') deleteTaskController(id);
-  // if (action === 'change priority') {
-  //   task.renderPriorityModal();
-  // }
-};
+// const taskObjectController = function (id, action, property) {
+//   if (action === 'delete task') deleteTaskController(id);
+//   // if (action === 'change priority') {
+//   //   task.renderPriorityModal();
+//   // }
+// };
 
-const deleteTaskController = function (id) {
-  tasks.deleteTask(+id);
-  tasks.render(displayHeadings.dataset.id);
-};
-const taskDataController = function (data) {
-  tasks.insertTask(data);
-  if (data.projectId === displayHeadings.dataset.id)
-    tasks.render(data.projectId);
+// const deleteTaskController = function (id) {
+//   tasks.deleteTask(+id);
+//   tasks.render(displayHeadings.dataset.id);
+// };
+// const taskDataController = function (data) {
+//   tasks.insertTask(data);
+//   if (data.projectId === displayHeadings.dataset.id)
+//     tasks.render(data.projectId);
 
-  tasks.taskObjectClickHandler(taskObjectController);
-};
+//   tasks.taskObjectClickHandler(taskObjectController);
+// };
 
-btnOpenTask.addEventListener('click', function () {
-  Form.render('task', taskDataController);
-});
+// btnOpenTask.addEventListener('click', function () {
+//   Form.render('task', taskDataController);
+// });
 
 //task handlers
-tasks.taskObjectClickHandler(taskObjectController);
+// tasks.taskObjectClickHandler(taskObjectController);
