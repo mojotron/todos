@@ -6,16 +6,18 @@ export default class Navigation {
   #mainItemSelector = 'nav__item--main';
   #projectItemSelector = 'nav__item--project';
   #btnDeleteProject = 'btn--delete-project';
+  #switchHandler;
+  #deleteHandler;
   //initialize navigation class with handler functions -> returns project id to controller
   //here handler is connection with controller
   constructor(switchHandler, deleteHandler) {
-    this.switchHandler = switchHandler;
-    this.deleteHandler = deleteHandler;
+    this.#switchHandler = switchHandler;
+    this.#deleteHandler = deleteHandler;
     //adding event listener with handler for main navigation
-    this.addLinkEventHandler(this.#mainItemSelector, this.switchHandler);
+    this.#addLinkEventHandler(this.#mainItemSelector, this.#switchHandler);
   }
 
-  projectListHtml(projects) {
+  #projectListHtml(projects) {
     return projects
       .map((project) => {
         return `
@@ -33,18 +35,18 @@ export default class Navigation {
     this.#userProjectsElement.innerHTML = '';
     this.#userProjectsElement.insertAdjacentHTML(
       'beforeend',
-      this.projectListHtml(projects)
+      this.#projectListHtml(projects)
     );
     //add event listener on all user made projects
-    this.addLinkEventHandler(this.#projectItemSelector, this.switchHandler);
-    this.addDeleteProjectHandler(this.deleteHandler);
+    this.#addLinkEventHandler(this.#projectItemSelector, this.#switchHandler);
+    this.#addDeleteProjectHandler(this.#deleteHandler);
   }
-  addLinkEventHandler(selector, handler) {
+  #addLinkEventHandler(selector, handler) {
     this.#parentElement.querySelectorAll(`.${selector}`).forEach((link) => {
       link.addEventListener('click', () => handler(link.dataset.id));
     });
   }
-  addDeleteProjectHandler(handler) {
+  #addDeleteProjectHandler(handler) {
     this.#parentElement
       .querySelectorAll(`.${this.#btnDeleteProject}`)
       .forEach((btn) =>

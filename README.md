@@ -11,3 +11,6 @@ and gives object with project title back. With this object controller creates ne
 Navigation class is initialize in the controller and controller pass 2 handler functios as arguments. For switching projects and deleteing projects. Both handlers recive project id from event listeners in Navigation class asscoiete with clicks.
 Switch handlers updates display by changing main headins and display tasks of that project.
 Delete handler removes project form projects class and displays all clears display if deleted project is currently displayed.
+
+Adding new task. User opens new form, inputs data, submit form.
+Form class takes handler for create buton. Handler pass Task object to controller which pass it to Task class and create new task in array. Controller update display.

@@ -19,7 +19,6 @@ class Projects {
   deleteProject(title) {
     this.#projects = this.#projects.filter((project) => project !== title);
     Storage.setProjects(this.#projects);
-    return title;
   }
 
   getProjects() {

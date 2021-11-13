@@ -14,7 +14,7 @@ import {
   BTN_NEW_TASK,
   MAIN_HEADINGS,
 } from './config.js';
-
+//PROJECT PART
 //open object form, pass handler for form creation, returns project object
 BTN_NEW_PROJECT.addEventListener('click', function () {
   Form.render(PROJECT, createProjectController);
@@ -31,6 +31,7 @@ const changeMainHeadings = function (projectId) {
 };
 const switchProjectHandler = function (projectId) {
   changeMainHeadings(projectId);
+  tasks.render(projectId);
 };
 
 const deleteProjectHandler = function (projectId) {
@@ -46,11 +47,24 @@ navigation.render(projects.getProjects());
 const displayProjectsController = function (projectNames) {
   navigation.render(projectNames);
 };
+//TASK PART
+//init display all task on load
 
-//Creating new task
-//- data flow => open form -> user submit data ->
-//-> form returns object to controller -> add object to tasks ->
+BTN_NEW_TASK.addEventListener('click', function () {
+  //TODO pass project, for now helper class get projects by importing
+  Form.render(TASK, createTaskController);
+});
 
+const createTaskController = function (taskObject) {
+  //add new task to task list
+  tasks.addTask(taskObject);
+  //render task based on selected project
+  tasks.render(MAIN_HEADINGS.dataset.id, tempDelete);
+};
+
+const tempDelete = function (str) {
+  console.log(str);
+};
 // const taskObjectController = function (id, action, property) {
 //   if (action === 'delete task') deleteTaskController(id);
 //   // if (action === 'change priority') {
@@ -70,9 +84,6 @@ const displayProjectsController = function (projectNames) {
 //   tasks.taskObjectClickHandler(taskObjectController);
 // };
 
-// btnOpenTask.addEventListener('click', function () {
-//   Form.render('task', taskDataController);
-// });
-
 //task handlers
 // tasks.taskObjectClickHandler(taskObjectController);
+tasks.render(MAIN_HEADINGS.dataset.id, tempDelete); //TODO
