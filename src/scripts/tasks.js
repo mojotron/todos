@@ -23,28 +23,20 @@ class Tasks {
 
   filterTasksByDate() {}
 
-  render(projectId, handler) {
+  render(projectId, projects, handlers) {
     //all, today, week or project name
     //if date or id
     this.#parentElement.innerHTML = '';
-    const filtered = this.filterTasksByProjectId(projectId);
+    let filtered;
+    if (projectId === 'all tasks') {
+      filtered = this.#tasks;
+    } else {
+      filtered = this.filterTasksByProjectId(projectId);
+    }
     for (const taskObj of filtered) {
-      this.#parentElement.append(task.createTask(taskObj, handler));
+      this.#parentElement.append(task.createTask(taskObj, projects, handlers));
     }
   }
-
-  // taskObjectClickHandler(handler) {
-  //   this.#parentElement.addEventListener('click', function (e) {
-  //     const btn = e.target.closest('.btn--task');
-  //     if (!btn) return;
-  //     const id = e.target.closest('.task').dataset.taskId;
-  //     const action = btn.title;
-  //     // if (action === 'change priority') {
-  //     //   handler(id, action, priority);
-  //     // }
-  //     handler(id, action);
-  //   });
-  // }
 
   deleteTask(taskId) {
     this.#tasks = this.#tasks.filter((task) => task.taskId !== taskId);

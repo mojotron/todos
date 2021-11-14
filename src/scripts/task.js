@@ -82,14 +82,22 @@ class TaskPriorityModalHTML {
 }
 
 class TaskProjectModalHTML {
-  //TODO import project list
-
   static createHTML(projects) {
+    const createListItemHTML = function (projectName) {
+      return `
+        <li 
+          class="projects__modal__item" 
+          data-project-id="${projectName}">
+            ${projectName}
+        </li>`;
+    };
     const projectList = projects
-      .map((ele) => `<li class="projects__modal__item">${ele}</li>`)
+      .map((project) => createListItemHTML(project))
       .join('\n');
+
     return `
       <ul class="projects__modal__list">
+        ${createListItemHTML('all tasks')}
         ${projectList}
       </ul>
     `;
@@ -106,8 +114,17 @@ class TaskDeadlineModalHTML {
     `;
   }
 }
+
+class TaskCreateModal {
+  static create(parentElement, className, innerHTML) {
+    const modal = document.createElement('div');
+    modal.className = className;
+    modal.innerHTML = innerHTML;
+    parentElement.append(modal);
+  }
+}
 class TaskDomElement {
-  createTask(taskObject, handler) {
+  createTask(taskObject, projects, handlers) {
     const taskElement = document.createElement('div');
     taskElement.className = 'task';
     taskElement.dataset.taskId = taskObject.taskId;
@@ -155,11 +172,12 @@ class TaskDomElement {
     `;
     taskElement.querySelectorAll('.btn--task').forEach((btn) => {
       btn.addEventListener('click', function (e) {
-        new TaskActionCoordinator(e, handler);
+        new TaskActionCoordinator(e, projects, handlers);
       });
     });
     return taskElement;
   }
+
   setData(type, data) {
     if (type === 'text') return TaskTextTypeHTML.createHTML(data);
     if (type === 'list') return TaskListTypeHTML.createHTML(data);
@@ -168,40 +186,77 @@ class TaskDomElement {
 }
 
 class TaskActionCoordinator {
-  constructor(event, handler) {
-    if (event.target.title === TASK_DELETE) {
-      handler(event.target.closest('.task').dataset.taskId);
+  constructor(event, projects, handlers) {
+    this.action = event.target.title;
+    this.taskId = event.target.closest('.task').dataset.taskId;
+    //delete task, directly give task id to the controller
+    if (this.action === TASK_DELETE) {
+      handlers.deleteTaskController(this.taskId);
+    }
+    //change priority
+    if (this.action === TASK_CHANGE_PRIORITY) {
+      if (document.querySelector('.priority__modal')) {
+        document.querySelector('.priority__modal').remove();
+      }
+      TaskCreateModal.create(
+        event.target.closest('li'),
+        'priority__modal',
+        TaskPriorityModalHTML.createHTML()
+      );
+      const flags = document.querySelectorAll('.priority__modal li');
+      flags.forEach((flag) =>
+        flag.addEventListener(
+          'click',
+          function (e) {
+            const newPriorityValue = e.target.dataset.priority;
+            handlers.changeTaskPriorityController(
+              this.taskId,
+              newPriorityValue
+            );
+          }.bind(this)
+        )
+      );
+    }
+    //change projects
+    if (this.action === TASK_CHANGE_PROJECT) {
+      TaskCreateModal.create(
+        event.target.closest('li'),
+        'projects__modal',
+        TaskProjectModalHTML.createHTML(projects)
+      );
+      const projectsList = document.querySelectorAll('.projects__modal li');
+      projectsList.forEach((projectItem) => {
+        projectItem.addEventListener(
+          'click',
+          function (e) {
+            const projectId = e.target.dataset.projectId;
+            handlers.changeTaskProjectController(this.taskId, projectId);
+          }.bind(this)
+        );
+      });
+    }
+    //change deadline
+    if (this.action === TASK_CHANGE_DEADLINE) {
+      TaskCreateModal.create(
+        event.target.closest('li'),
+        'deadline__modal',
+        TaskDeadlineModalHTML.createHTML()
+      );
+      const btn = document.querySelector('.btn--deadline-modal');
+      btn.addEventListener(
+        'click',
+        function (e) {
+          const newDeadline = e.target.previousElementSibling.value;
+          handlers.changeTaskDeadlineController(this.taskId, newDeadline);
+        }.bind(this)
+      );
     }
   }
 }
-// class DeleteTaskEventHandler {
-//   constructor(taskElement, handler) {
-//     this.element = taskElement;
-//   }
 
-//   addClickHandler(handler) {
-//     this.element
-//       .querySelector(`[title="${TASK_DELETE}"]`)
-//       .addEventListener('click', function (e) {}.bind(this));
-//   }
-// }
 // class Task {
 //   render(taskObject) {
-//     const task = new TaskDomElement();
-//     const taskElement = task.createTask(taskObject);
-//     const btnPriority = taskElement.querySelector('[title="change priority"]');
-//     btnPriority.addEventListener(
-//       'click',
-//       function () {
-//         this.removeModal();
-
-//         this.renderModal(
-//           btnPriority.closest('li'),
-//           'priority__modal',
-//           TaskPriorityModalHTML.createHTML()
-//         );
-//       }.bind(this)
-//     );
+//
 //     const btnDeadline = taskElement.querySelector('[title="change deadline"]');
 //     btnDeadline.addEventListener(
 //       'click',
@@ -214,19 +269,7 @@ class TaskActionCoordinator {
 //         );
 //       }.bind(this)
 //     );
-//     const btnProjects = taskElement.querySelector('[title="change project"]');
-//     btnProjects.addEventListener(
-//       'click',
-//       function () {
-//         this.removeModal();
-
-//         this.renderModal(
-//           btnProjects.closest('li'),
-//           'projects__modal',
-//           TaskProjectModalHTML.createHTML(['all', 'running', 'coding'])
-//         );
-//       }.bind(this)
-//     );
+//
 
 //     const btnEditText = taskElement.querySelector('[title="edit text"]');
 //     if (btnEditText) {
