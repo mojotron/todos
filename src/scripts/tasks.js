@@ -49,6 +49,25 @@ class Tasks {
     target[property] = newValue;
     Storage.setTasks(this.#tasks);
   }
+
+  deleteTaskListItem(taskId, itemId) {
+    const target = this.#tasks.find((task) => task.taskId === taskId);
+    console.log(target);
+    target.data.splice(itemId, 1);
+    Storage.setTasks(this.#tasks);
+  }
+
+  addListItemToTask(taskId, newItem) {
+    const target = this.#tasks.find((task) => task.taskId === taskId);
+    target.data.push({ checked: false, listItem: newItem });
+    Storage.setTasks(this.#tasks);
+  }
+
+  updateListProperty(taskId, itemId, property, newValue) {
+    const target = this.#tasks.find((task) => task.taskId === taskId);
+    target.data[itemId][property] = newValue;
+    Storage.setTasks(this.#tasks);
+  }
 }
 
 export default new Tasks();

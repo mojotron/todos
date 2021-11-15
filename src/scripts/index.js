@@ -60,7 +60,6 @@ BTN_NEW_TASK.addEventListener('click', function () {
 
 const createTaskController = function (taskObject) {
   console.log(taskObject);
-  console.log(taskObject);
   //add new task to task list
   tasks.addTask(taskObject);
   //render task based on selected project
@@ -88,27 +87,31 @@ const taskControllers = {
     tasks.updateTask(+taskId, 'deadline', newDeadline);
     tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
   },
+
+  changeTaskTextDataController(taskId, newText) {
+    tasks.updateTask(+taskId, 'data', newText);
+    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+  },
+
+  deleteTaskListItemController(taskId, itemId) {
+    tasks.deleteTaskListItem(+taskId, itemId);
+    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+  },
+
+  addTaskListItemController(taskId, newItem) {
+    tasks.addListItemToTask(+taskId, newItem);
+    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+  },
+
+  updateTaskListItemController(taskId, itemId, newValue) {
+    tasks.updateListProperty(+taskId, +itemId, 'listItem', newValue);
+    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+  },
+
+  updateTaskListCheckboxController(taskId, itemId, newValue) {
+    tasks.updateListProperty(+taskId, +itemId, 'checked', newValue);
+    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+  },
 };
 
-// const taskObjectController = function (id, action, property) {
-//   if (action === 'delete task') deleteTaskController(id);
-//   // if (action === 'change priority') {
-//   //   task.renderPriorityModal();
-//   // }
-// };
-
-// const deleteTaskController = function (id) {
-//   tasks.deleteTask(+id);
-//   tasks.render(displayHeadings.dataset.id);
-// };
-// const taskDataController = function (data) {
-//   tasks.insertTask(data);
-//   if (data.projectId === displayHeadings.dataset.id)
-//     tasks.render(data.projectId);
-
-//   tasks.taskObjectClickHandler(taskObjectController);
-// };
-
-//task handlers
-// tasks.taskObjectClickHandler(taskObjectController);
 tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers); //TODO

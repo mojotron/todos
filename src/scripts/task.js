@@ -23,10 +23,10 @@ class TaskTextTypeHTML {
 class TaskListTypeHTML {
   static createHTML(data) {
     const listItems = data
-      .map((item) => {
+      .map((item, i) => {
         return `
-          <div class="task__body__item task__item--list-item">
-            <p>${LIST_SIGN} <span class="task__item__data">${item}</span></p>
+          <div class="task__body__item task__item--list-item" data-item-id="${i}">
+            <p>${LIST_SIGN} <span class="task__item__data">${item.listItem}</span></p>
             <div>
               <button class="btn--task" title="${TASK_EDIT_ITEM}">${EDIT_SIGN}</button>
               <button class="btn--task" title="${TASK_DELETE_ITEM}">${CLOSE_SIGN}</button>
@@ -44,10 +44,12 @@ class TaskListTypeHTML {
 class TaskCheckboxTypeHTML {
   static createHTML(data) {
     const listItems = data
-      .map((item) => {
+      .map((item, i) => {
         return `
-          <div class="task__body__item task__item--checkbox-item">
-            <p><input type="checkbox"><spam class="task__item__data">${item}</spam></p>
+          <div class="task__body__item task__item--checkbox-item" data-item-id="${i}">
+            <p><input class="task__checkbox" type="checkbox" ${
+              item.checked ? 'checked' : ''
+            }><spam class="task__item__data">${item.listItem}</spam></p>
             <div>
               <button class="btn--task" title="${TASK_EDIT_ITEM}">${EDIT_SIGN}</button>
               <button class="btn--task" title="${TASK_DELETE_ITEM}">${CLOSE_SIGN}</button>
@@ -115,12 +117,43 @@ class TaskDeadlineModalHTML {
   }
 }
 
+class TaskTextDataModalHTML {
+  static createHTML(textContent) {
+    return `
+      <textarea class="task__textarea">${textContent}</textarea>
+      <button class="btn btn--update-textarea">${SUBMIT_SIGN}</button>
+    `;
+  }
+}
+
+class TaskListDataModalHTML {
+  static createHTML() {
+    return `
+      <input class="task__input" type="text">
+      <button class="btn--add-list-item">add</button>
+    `;
+  }
+}
+
+class TaskListUpdateItemModalHTML {
+  static createHTML(textContent) {
+    return `
+      <input class="task__update" type="text" value="${textContent}">
+      <button class="btn--update-list-item">update</button>
+    `;
+  }
+}
+
 class TaskCreateModal {
   static create(parentElement, className, innerHTML) {
     const modal = document.createElement('div');
     modal.className = className;
     modal.innerHTML = innerHTML;
     parentElement.append(modal);
+  }
+
+  static update(parentElement, innerHTML) {
+    parentElement.innerHTML = innerHTML;
   }
 }
 class TaskDomElement {
@@ -173,6 +206,15 @@ class TaskDomElement {
     taskElement.querySelectorAll('.btn--task').forEach((btn) => {
       btn.addEventListener('click', function (e) {
         new TaskActionCoordinator(e, projects, handlers);
+      });
+    });
+    taskElement.querySelectorAll('.task__checkbox').forEach((x) => {
+      x.addEventListener('click', function (e) {
+        handlers.updateTaskListCheckboxController(
+          taskElement.dataset.taskId,
+          e.target.closest('.task__body__item').dataset.itemId,
+          e.target.checked
+        );
       });
     });
     return taskElement;
@@ -251,74 +293,83 @@ class TaskActionCoordinator {
         }.bind(this)
       );
     }
+    //change data in text type
+    if (this.action === TASK_EDIT_TEXT) {
+      const textElement = event.target.previousElementSibling;
+      TaskCreateModal.update(
+        textElement,
+        TaskTextDataModalHTML.createHTML(textElement.textContent)
+      );
+      const textArea = document.querySelector('.task__textarea');
+      //set text cursor to new text area at the end of text
+      textArea.focus();
+      textArea.selectionStart = textArea.value.length;
+      const btn = document.querySelector('.btn--update-textarea');
+      btn.addEventListener(
+        'click',
+        function () {
+          const newText = textArea.value;
+          handlers.changeTaskTextDataController(this.taskId, newText);
+        }.bind(this)
+      );
+    }
+    //delete list item
+    if (this.action === TASK_DELETE_ITEM) {
+      const itemId = event.target.closest('.task__body__item').dataset.itemId;
+      handlers.deleteTaskListItemController(this.taskId, itemId);
+    }
+    //add list item
+    if (this.action === TASK_ADD_ITEM) {
+      const listItem = event.target.closest('.task__body');
+      TaskCreateModal.create(
+        listItem,
+        'input-list__modal',
+        TaskListDataModalHTML.createHTML()
+      );
+      const input = document.querySelector('.task__input');
+      input.focus();
+      const btn = document.querySelector('.btn--add-list-item');
+      btn.addEventListener(
+        'click',
+        function (e) {
+          const newItem = input.value;
+          handlers.addTaskListItemController(this.taskId, newItem);
+        }.bind(this)
+      );
+    }
+    //update list item
+    if (this.action === TASK_EDIT_ITEM) {
+      const listItem = event.target
+        .closest('.task__body__item')
+        .querySelector('.task__item__data');
+      const listItemContent = listItem.textContent;
+      console.log(listItemContent);
+      TaskCreateModal.update(
+        listItem,
+        TaskListUpdateItemModalHTML.createHTML(listItemContent)
+      );
+      const input = document.querySelector('.task__update');
+      input.focus();
+      input.selectionStart = input.value.length;
+      const btn = document.querySelector('.btn--update-list-item');
+      //TODO SELECTORS REFACTOR
+      const itemId = event.target.closest('.task__body__item').dataset.itemId;
+      btn.addEventListener(
+        'click',
+        function () {
+          handlers.updateTaskListItemController(
+            this.taskId,
+            itemId,
+            input.value
+          );
+        }.bind(this)
+      );
+    }
+    //check item
+    console.log(document.querySelectorAll('[type="checkbox"]'));
   }
 }
 
-// class Task {
-//   render(taskObject) {
-//
-//     const btnDeadline = taskElement.querySelector('[title="change deadline"]');
-//     btnDeadline.addEventListener(
-//       'click',
-//       function () {
-//         this.removeModal();
-//         this.renderModal(
-//           btnDeadline.closest('li'),
-//           'deadline__modal',
-//           TaskDeadlineModalHTML.createHTML()
-//         );
-//       }.bind(this)
-//     );
-//
-
-//     const btnEditText = taskElement.querySelector('[title="edit text"]');
-//     if (btnEditText) {
-//       btnEditText.addEventListener('click', function (e) {
-//         const para = taskElement.querySelector('.task__paragraph');
-//         const currentContent = para.textContent;
-//         para.innerHTML = `
-//           <textarea class="task__textarea">${currentContent}</textarea>
-//           <button class="btn btn--update-textarea">&#8626;</button>
-//         `;
-//         const temp = document.querySelector('.task__textarea');
-//         //set focus to end of text
-//         temp.focus();
-//         temp.selectionStart = temp.value.length;
-//       });
-//     }
-//     const btnAddItem = taskElement.querySelector('[title="add item"]');
-//     if (btnAddItem) {
-//       btnAddItem.addEventListener('click', function (e) {
-//         const temp = taskElement.querySelector('.task__body');
-//         const input = document.createElement('div');
-//         input.innerHTML = `
-//           <input type="text">
-//           <button>add</button>
-//         `;
-//         temp.append(input);
-//       });
-//     }
-//     const btnEditItem = taskElement.querySelectorAll('[title="edit item"]');
-//     if (btnEditItem) {
-//       btnEditItem.forEach((btn) => {
-//         btn.addEventListener('click', function (e) {
-//           //remove input for update item
-//           taskElement.querySelectorAll('.task__item__data').forEach((ele) => {
-//             const input = ele.querySelector('input');
-//             if (input) ele.textContent = input.placeholder;
-//           });
-//           const temp = e.target
-//             .closest('.task__body__item')
-//             .querySelector('.task__item__data');
-//           temp.innerHTML = `
-//           <input type="text" placeholder="${temp.textContent}">
-//           <button>update</button>
-//           `;
-//         });
-//       });
-//     }
-//     return taskElement;
-//   }
 //   //priority modal
 //   removeModal() {
 //     // if (!document.querySelector(selector)) return;
@@ -328,12 +379,6 @@ class TaskActionCoordinator {
 //       document.querySelector('.deadline__modal').remove();
 //     if (document.querySelector('.projects__modal'))
 //       document.querySelector('.projects__modal').remove();
-//   }
-//   renderModal(element, className, html) {
-//     const modal = document.createElement('div');
-//     modal.className = className;
-//     modal.innerHTML = html;
-//     element.append(modal);
 //   }
 // }
 export default new TaskDomElement();

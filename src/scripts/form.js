@@ -31,9 +31,10 @@ export default class Form {
     }
     if (dataType === 'list' || dataType === 'checkbox') {
       const list = document.querySelector('[data-input="list"]');
-      const listItems = Array.from(list.querySelectorAll('li')).map(
-        (ele) => ele.textContent
-      );
+      const listItems = Array.from(list.querySelectorAll('li')).map((ele) => ({
+        checked: false,
+        listItem: ele.textContent,
+      }));
       dataObject.data = listItems;
     }
     this.closeBtnHandler();
