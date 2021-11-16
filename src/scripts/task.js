@@ -120,7 +120,7 @@ class TaskDeadlineModalHTML {
 class TaskTextDataModalHTML {
   static createHTML(textContent) {
     return `
-      <textarea class="task__textarea">${textContent}</textarea>
+      <textarea class="task__textarea" placeholder="${textContent}">${textContent}</textarea>
       <button class="btn btn--update-textarea">${SUBMIT_SIGN}</button>
     `;
   }
@@ -137,8 +137,9 @@ class TaskListDataModalHTML {
 
 class TaskListUpdateItemModalHTML {
   static createHTML(textContent) {
+    //placeholder data is used in removeModal to set original value
     return `
-      <input class="task__update" type="text" value="${textContent}">
+      <input class="task__update" type="text" value="${textContent}" placeholder="${textContent}">
       <button class="btn--update-list-item">update</button>
     `;
   }
@@ -237,6 +238,7 @@ class TaskActionCoordinator {
     }
     //change priority
     if (this.action === TASK_CHANGE_PRIORITY) {
+      this.removeModal();
       if (document.querySelector('.priority__modal')) {
         document.querySelector('.priority__modal').remove();
       }
@@ -261,6 +263,7 @@ class TaskActionCoordinator {
     }
     //change projects
     if (this.action === TASK_CHANGE_PROJECT) {
+      this.removeModal();
       TaskCreateModal.create(
         event.target.closest('li'),
         'projects__modal',
@@ -279,6 +282,7 @@ class TaskActionCoordinator {
     }
     //change deadline
     if (this.action === TASK_CHANGE_DEADLINE) {
+      this.removeModal();
       TaskCreateModal.create(
         event.target.closest('li'),
         'deadline__modal',
@@ -295,6 +299,7 @@ class TaskActionCoordinator {
     }
     //change data in text type
     if (this.action === TASK_EDIT_TEXT) {
+      this.removeModal();
       const textElement = event.target.previousElementSibling;
       TaskCreateModal.update(
         textElement,
@@ -320,6 +325,7 @@ class TaskActionCoordinator {
     }
     //add list item
     if (this.action === TASK_ADD_ITEM) {
+      this.removeModal();
       const listItem = event.target.closest('.task__body');
       TaskCreateModal.create(
         listItem,
@@ -339,11 +345,11 @@ class TaskActionCoordinator {
     }
     //update list item
     if (this.action === TASK_EDIT_ITEM) {
+      this.removeModal();
       const listItem = event.target
         .closest('.task__body__item')
         .querySelector('.task__item__data');
       const listItemContent = listItem.textContent;
-      console.log(listItemContent);
       TaskCreateModal.update(
         listItem,
         TaskListUpdateItemModalHTML.createHTML(listItemContent)
@@ -365,20 +371,27 @@ class TaskActionCoordinator {
         }.bind(this)
       );
     }
-    //check item
-    console.log(document.querySelectorAll('[type="checkbox"]'));
+  }
+
+  removeModal() {
+    // if (!document.querySelector(selector)) return;
+    if (document.querySelector('.priority__modal'))
+      document.querySelector('.priority__modal').remove();
+    if (document.querySelector('.deadline__modal'))
+      document.querySelector('.deadline__modal').remove();
+    if (document.querySelector('.projects__modal'))
+      document.querySelector('.projects__modal').remove();
+    if (document.querySelector('.input-list__modal'))
+      document.querySelector('.input-list__modal').remove();
+    if (document.querySelector('.task__textarea')) {
+      const open = document.querySelector('.task__textarea');
+      open.parentElement.innerHTML = open.placeholder;
+    }
+    if (document.querySelector('.task__update')) {
+      const open = document.querySelector('.task__update');
+      open.parentElement.innerHTML = open.placeholder;
+    }
   }
 }
 
-//   //priority modal
-//   removeModal() {
-//     // if (!document.querySelector(selector)) return;
-//     if (document.querySelector('.priority__modal'))
-//       document.querySelector('.priority__modal').remove();
-//     if (document.querySelector('.deadline__modal'))
-//       document.querySelector('.deadline__modal').remove();
-//     if (document.querySelector('.projects__modal'))
-//       document.querySelector('.projects__modal').remove();
-//   }
-// }
 export default new TaskDomElement();

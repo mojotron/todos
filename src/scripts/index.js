@@ -16,7 +16,6 @@ import {
 } from './config.js';
 
 //PROJECT PART
-
 //open object form, pass handler for form creation, returns project object
 BTN_NEW_PROJECT.addEventListener('click', function () {
   Form.render(PROJECT, createProjectController);
@@ -33,19 +32,19 @@ const changeMainHeadings = function (projectId) {
 };
 const switchProjectHandler = function (projectId) {
   changeMainHeadings(projectId);
-  tasks.render(projectId, projectsArr, taskControllers);
+  tasks.render(projectId, projects.getProjects(), taskControllers);
 };
 
 const deleteProjectHandler = function (projectId) {
   projects.deleteProject(projectId);
   displayProjectsController(projects.getProjects());
-  //TODO delete associated tasks
-  //TODO update display after deletion if that project is displayed
+  changeMainHeadings('all tasks');
+  tasks.render('all tasks', projects.getProjects(), taskControllers);
 };
 //TODO init
 const navigation = new Navigation(switchProjectHandler, deleteProjectHandler);
 navigation.render(projects.getProjects());
-const projectsArr = projects.getProjects();
+
 //display projects
 const displayProjectsController = function (projectNames) {
   navigation.render(projectNames);
@@ -54,64 +53,101 @@ const displayProjectsController = function (projectNames) {
 //init display all task on load
 
 BTN_NEW_TASK.addEventListener('click', function () {
-  //TODO pass project, for now helper class get projects by importing
   Form.render(TASK, createTaskController);
 });
 
 const createTaskController = function (taskObject) {
-  console.log(taskObject);
   //add new task to task list
   tasks.addTask(taskObject);
   //render task based on selected project
-  tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+  tasks.render(
+    MAIN_HEADINGS.dataset.id,
+    projects.getProjects(),
+    taskControllers
+  );
 };
 
 const taskControllers = {
   deleteTaskController(taskId) {
     tasks.deleteTask(+taskId);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 
   changeTaskPriorityController(taskId, priority) {
     tasks.updateTask(+taskId, 'priority', priority);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 
   changeTaskProjectController(taskId, projectId) {
-    console.log(+taskId, projectId);
     tasks.updateTask(+taskId, 'projectId', projectId);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 
   changeTaskDeadlineController(taskId, newDeadline) {
     tasks.updateTask(+taskId, 'deadline', newDeadline);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 
   changeTaskTextDataController(taskId, newText) {
     tasks.updateTask(+taskId, 'data', newText);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 
   deleteTaskListItemController(taskId, itemId) {
     tasks.deleteTaskListItem(+taskId, itemId);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 
   addTaskListItemController(taskId, newItem) {
     tasks.addListItemToTask(+taskId, newItem);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 
   updateTaskListItemController(taskId, itemId, newValue) {
     tasks.updateListProperty(+taskId, +itemId, 'listItem', newValue);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 
   updateTaskListCheckboxController(taskId, itemId, newValue) {
     tasks.updateListProperty(+taskId, +itemId, 'checked', newValue);
-    tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers);
+    tasks.render(
+      MAIN_HEADINGS.dataset.id,
+      projects.getProjects(),
+      taskControllers
+    );
   },
 };
 
-tasks.render(MAIN_HEADINGS.dataset.id, projectsArr, taskControllers); //TODO
+tasks.render(MAIN_HEADINGS.dataset.id, projects.getProjects(), taskControllers); //TODO
