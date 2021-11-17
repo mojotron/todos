@@ -1,8 +1,9 @@
 import FormHelperModule from './form-helper-module';
 
 export default class Form {
-  static closeBtnHandler() {
-    document.querySelector('.modal').remove();
+  static removeModal() {
+    if (document.querySelector('.modal'))
+      document.querySelector('.modal').remove();
   }
 
   static createBtnHandler(handler) {
@@ -12,22 +13,25 @@ export default class Form {
     const title = document.querySelector('[data-input="title"]').value;
     const dataObject = { title };
     if (dataType === 'project') {
-      this.closeBtnHandler();
+      this.removeModal();
       handler(dataObject);
-      return; //return this
+      return; //return
     }
-    const deadline = document.querySelector('[data-input="deadline"]').value;
-    const priority = document.querySelector('[data-input="priority"]').value;
-    const type = document.querySelector('[data-input="type"]').value;
-    const projectId = document.querySelector('[data-input="projectId"]').value;
-    dataObject.deadline = deadline;
-    dataObject.priority = priority;
-    dataObject.type = type;
-    dataObject.projectId = projectId;
+    dataObject.deadline = document.querySelector(
+      '[data-input="deadline"]'
+    ).value;
+    dataObject.priority = document.querySelector(
+      '[data-input="priority"]'
+    ).value;
+    dataObject.type = document.querySelector('[data-input="type"]').value;
+    dataObject.projectId = document.querySelector(
+      '[data-input="projectId"]'
+    ).value;
     dataObject.taskId = Date.now();
     if (dataType === 'text') {
-      const text = document.querySelector('[data-input="text"]').value;
-      dataObject.data = text;
+      dataObject.data = document
+        .querySelector('[data-input="text"]')
+        .value.trim();
     }
     if (dataType === 'list' || dataType === 'checkbox') {
       const list = document.querySelector('[data-input="list"]');
@@ -37,7 +41,7 @@ export default class Form {
       }));
       dataObject.data = listItems;
     }
-    this.closeBtnHandler();
+    this.removeModal();
     handler(dataObject);
     return;
   }
@@ -74,9 +78,8 @@ export default class Form {
     return true;
   }
 
-  static render(type, handler) {
-    if (document.querySelector('.modal'))
-      document.querySelector('.modal').remove();
+  static render(type, handler, projects) {
+    this.removeModal();
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.innerHTML = `
@@ -88,7 +91,7 @@ export default class Form {
         ${
           type === 'project'
             ? FormHelperModule.renderProject()
-            : FormHelperModule.renderTask()
+            : FormHelperModule.renderTask(projects)
         }
         <button class="btn btn--create">create</button>
       </form>`;
@@ -96,7 +99,7 @@ export default class Form {
     document.body.append(modal);
     //add event listeners
     const closeBtn = modal.querySelector('.btn--close');
-    closeBtn.addEventListener('click', this.closeBtnHandler);
+    closeBtn.addEventListener('click', this.removeModal);
 
     const createBtn = modal.querySelector('.btn--create');
     createBtn.addEventListener(

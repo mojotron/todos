@@ -3,10 +3,14 @@ export const PROJECT = 'project';
 export const BTN_NEW_PROJECT = document.querySelector('.btn--open-project');
 export const BTN_NEW_TASK = document.querySelector('.btn--open-task');
 export const MAIN_HEADINGS = document.querySelector('.display__header');
+export const STORAGE_TASKS = 'tasks-TD';
+export const STORAGE_PROJECTS = 'projects-TD';
 
 export const PRIORITIES = ['low', 'moderate', 'critical'];
 
 export const ALL_TASKS = 'all tasks';
+export const TODAY_TASKS = 'today';
+export const WEEK_TASKS = '7 days';
 //uff-8 signs used as icons
 export const STAR_SIGN = '&#9733;';
 export const CLOSE_SIGN = '&#10006;';

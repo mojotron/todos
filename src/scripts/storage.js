@@ -1,22 +1,15 @@
+import { STORAGE_PROJECTS, STORAGE_TASKS } from './config';
 export default class Storage {
-  static getTasks() {
-    return JSON.parse(localStorage.getItem('tasks'));
+  static getData(storageID) {
+    return JSON.parse(localStorage.getItem(storageID));
   }
 
-  static setTasks(tasksArray) {
-    localStorage.setItem('tasks', JSON.stringify(tasksArray));
-  }
-
-  static getProjects() {
-    return JSON.parse(localStorage.getItem('taskProjects'));
-  }
-
-  static setProjects(projectsArray) {
-    localStorage.setItem('taskProjects', JSON.stringify(projectsArray));
+  static setData(storageID, data) {
+    localStorage.setItem(storageID, JSON.stringify(data));
   }
 
   static clear() {
-    localStorage.clear('tasks');
-    localStorage.clear('taskProjects');
+    localStorage.clear(STORAGE_TASKS);
+    localStorage.clear(STORAGE_PROJECTS);
   }
 }

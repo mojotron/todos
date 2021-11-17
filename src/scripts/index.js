@@ -53,7 +53,7 @@ const displayProjectsController = function (projectNames) {
 //init display all task on load
 
 BTN_NEW_TASK.addEventListener('click', function () {
-  Form.render(TASK, createTaskController);
+  Form.render(TASK, createTaskController, projects.getProjects());
 });
 
 const createTaskController = function (taskObject) {

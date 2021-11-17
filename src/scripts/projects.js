@@ -1,10 +1,10 @@
 import Storage from './storage.js';
-import { STAR_SIGN } from './config.js';
+import { STAR_SIGN, STORAGE_PROJECTS } from './config.js';
 class Projects {
   #projects;
 
   constructor() {
-    this.#projects = Storage.getProjects() || [];
+    this.#projects = Storage.getData(STORAGE_PROJECTS) || [];
   }
 
   addProject(title) {
@@ -13,12 +13,12 @@ class Projects {
       title = title + STAR_SIGN;
     }
     this.#projects.push(title);
-    Storage.setProjects(this.#projects);
+    Storage.setData(STORAGE_PROJECTS, this.#projects);
   }
 
   deleteProject(title) {
     this.#projects = this.#projects.filter((project) => project !== title);
-    Storage.setProjects(this.#projects);
+    Storage.setData(STORAGE_PROJECTS, this.#projects);
   }
 
   getProjects() {

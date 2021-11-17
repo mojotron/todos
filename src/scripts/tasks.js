@@ -1,21 +1,26 @@
-import task from './task.js';
+import task from './task/task.js';
 import Storage from './storage.js';
 import FormatDateModule from './date-formatter-module.js';
+import { STORAGE_TASKS, ALL_TASKS, TODAY_TASKS, WEEK_TASKS } from './config.js';
 class Tasks {
   #tasks;
   #parentElement = document.querySelector('.display__wrapper');
 
   constructor() {
-    this.#tasks = Storage.getTasks() || [];
-    this.sortTasks();
+    this.#tasks = Storage.getData(STORAGE_TASKS) || [];
+    this.#sortTasks();
   }
 
   addTask(task) {
     this.#tasks.push(task);
-    this.sortTasks();
+    this.#sortTasks();
   }
 
-  sortTasks() {
+  getTasks() {
+    return this.#tasks;
+  }
+
+  #sortTasks() {
     this.#tasks = this.#tasks.sort((a, b) => {
       const dateA = new Date(a.deadline);
       const dateB = new Date(b.deadline);
@@ -23,11 +28,7 @@ class Tasks {
       if (dateA < dateB) return -1;
       return 0;
     });
-    Storage.setTasks(this.#tasks);
-  }
-
-  getTasks() {
-    return this.#tasks;
+    Storage.setData(STORAGE_TASKS, this.#tasks);
   }
 
   filterTasksByProjectId(projectId) {
@@ -48,16 +49,15 @@ class Tasks {
 
   render(projectId, projects, handlers) {
     this.#parentElement.innerHTML = '';
-    let filtered;
-    if (projectId === 'all tasks') {
-      filtered = this.#tasks;
-    } else if (projectId === 'today') {
-      filtered = this.filterTasksByToday();
-    } else if (projectId === '7 days') {
-      filtered = this.filterTasksByNextWeek();
-    } else {
-      filtered = this.filterTasksByProjectId(projectId);
-    }
+    const filtered =
+      projectId === ALL_TASKS
+        ? this.#tasks
+        : projectId === TODAY_TASKS
+        ? this.filterTasksByToday()
+        : projectId === WEEK_TASKS
+        ? this.filterTasksByNextWeek()
+        : this.filterTasksByProjectId(projectId);
+
     for (const taskObj of filtered) {
       this.#parentElement.append(task.createTask(taskObj, projects, handlers));
     }
@@ -65,32 +65,32 @@ class Tasks {
 
   deleteTask(taskId) {
     this.#tasks = this.#tasks.filter((task) => task.taskId !== taskId);
-    this.sortTasks();
+    this.#sortTasks();
   }
 
   updateTask(taskId, property, newValue) {
     const target = this.#tasks.find((task) => task.taskId === taskId);
     if (!target) return;
     target[property] = newValue;
-    this.sortTasks();
+    this.#sortTasks();
   }
 
   deleteTaskListItem(taskId, itemId) {
     const target = this.#tasks.find((task) => task.taskId === taskId);
     target.data.splice(itemId, 1);
-    this.sortTasks();
+    this.#sortTasks();
   }
 
   addListItemToTask(taskId, newItem) {
     const target = this.#tasks.find((task) => task.taskId === taskId);
     target.data.push({ checked: false, listItem: newItem });
-    this.sortTasks();
+    this.#sortTasks();
   }
 
   updateListProperty(taskId, itemId, property, newValue) {
     const target = this.#tasks.find((task) => task.taskId === taskId);
     target.data[itemId][property] = newValue;
-    this.sortTasks();
+    this.#sortTasks();
   }
 }
 

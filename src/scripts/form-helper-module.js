@@ -1,4 +1,3 @@
-import projects from './projects.js';
 export default class FormHelperModule {
   static renderProject() {
     return `
@@ -27,7 +26,7 @@ export default class FormHelperModule {
       .join('\n');
   }
 
-  static renderTask() {
+  static renderTask(projects) {
     return `
     <div class="modal__field">
       <label class="modal__label">task name</label>
@@ -87,7 +86,7 @@ export default class FormHelperModule {
           <option class="modal__option" value="all tasks">
             all
           </option>
-          ${this.projectOptions(projects.getProjects())}
+          ${this.projectOptions(projects)}
         </select>
       </div>
     </div>

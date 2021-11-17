@@ -1,7 +1,25 @@
 # TO-DO List
 
-SOLID principles
-BEM
+This project is part of The Odin Project Curriculum.
+
+Try this todo app here.
+
+inspiration
+
+how to use
+arhitecture
+
+## What have i learned
+
+- SOLID principles
+- BEM
+
+## Roadblocks
+
+Updateing tasks from controller file without impotring tasks and project files to
+the taskDom file.
+
+## Useful resources
 
 Connect class with controller by passing handler functions as params new Navigation(switchHandler, deleteHandler)
 
