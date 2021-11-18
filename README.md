@@ -6,7 +6,31 @@ Try this todo app here.
 
 inspiration
 
-how to use
+# How to use Todos
+
+This is simple application for keeping track of your tasks.
+User can create three types of tasks. The text task, adding a block of text.
+List task, make a simple list with bullet points. Great for tasks with multiple
+short subtasks. And a checkbox list, simlar to the list task but with posibility
+to check completed subtasks.
+Every task can be modified many options:
+
+- deadline
+- change prority
+- change project
+- delete task
+- edit text task
+- add item to list/checkbox task
+- delete item fro list/checbox task
+- update item in list/chackbox task
+
+In addition of task creation, user can create project and group tasks to specified
+project.
+
+User can filter task by projects, and by due date. There are 2 options for due
+date filtering. Tasks that have due date today and this week. Basic filter is
+display all tasks. Tasks are automatically sorted by due date.
+
 arhitecture
 
 ## What have i learned
@@ -18,6 +42,7 @@ arhitecture
 
 Updateing tasks from controller file without impotring tasks and project files to
 the taskDom file.
+Planning project.
 
 ## Useful resources
 

@@ -239,6 +239,11 @@ body {
   background: var(--G-B-gradient);
   color: var(--white-blue);
 }
+.btn--update {
+  display: inline-block;
+  font-size: 1rem;
+  padding: 0.1rem 0.8rem;
+}
 .btn:hover {
   color: var(--text-color);
   box-shadow: 0.1rem 0.1rem 0.2rem var(--text-color);
@@ -354,4 +359,14 @@ body {
 .btn--update-textarea {
   margin-top: 0.5rem;
   padding: 0.2rem 0.3rem 0.2rem;
+}
+.task__checked {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+@media (max-width: 786px) {
+  html {
+    font-size: 10px;
+  }
 }

@@ -41,10 +41,14 @@ export default class TaskDynamicHTML {
     const listItems = data
       .map((item, i) => {
         return `
-          <div class="task__body__item task__item--checkbox-item" data-item-id="${i}">
-            <p><input class="task__checkbox" type="checkbox" ${
-              item.checked ? 'checked' : ''
-            }><spam class="task__item__data">${item.listItem}</spam></p>
+          <div 
+            class="task__body__item task__item--checkbox-item"
+            data-item-id="${i}">
+            <p class="${
+              item.checked ? 'task__checked' : ''
+            }"><input class="task__checkbox" type="checkbox" ${
+          item.checked ? 'checked' : ''
+        }><spam class="task__item__data">${item.listItem}</spam></p>
             <div>
               <button class="btn--task" title="${TASK_EDIT_ITEM}">${EDIT_SIGN}</button>
               <button class="btn--task" title="${TASK_DELETE_ITEM}">${CLOSE_SIGN}</button>
@@ -109,7 +113,7 @@ export default class TaskDynamicHTML {
   static createTaskListDataModalHTML() {
     return `
         <input class="task__input" type="text">
-        <button class="btn--add-list-item">add</button>
+        <button class="btn btn--add-list-item">${ADD_SIGN}</button>
       `;
   }
 
@@ -117,7 +121,7 @@ export default class TaskDynamicHTML {
     //placeholder data is used in removeModal to set original value
     return `
         <input class="task__update" type="text" value="${textContent}" placeholder="${textContent}">
-        <button class="btn--update-list-item">update</button>
+        <button class="btn btn--update btn--update-list-item">update</button>
       `;
   }
 }
