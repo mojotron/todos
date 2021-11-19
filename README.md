@@ -1,59 +1,20 @@
 # TO-DO List
 
-This project is part of The Odin Project Curriculum.
+This project is part of [The Odin Project](https://www.theodinproject.com/) Curriculum.
 
-Try this todo app here.
+Try [todos](https://mojotron.github.io/todos/) and organize you tasks, app hosted with Github Pages.
 
-inspiration
+## Todos user guide
 
-# How to use Todos
+This is simple application for keeping track of the tasks. User can create a new task or a new project. When creating new task, user can set title, deadline, priority, type of task and group it to an existing project. Type of task creates specific task body. There are three possible types of tasks. Text task, user describes the task with block of text. List task, user describes tasks with list of short descriptions in form of bullet points. And finally checkbox task, similar to the list with addition of having checkbox to keep track of progress. User can cross out the list item clicking on checkbox.
+After creation of the task, task is display in the tasks display view. Task can be updated multiple way. Changing deadline, project id, or priority. Task can be deleted. Body of the task can be edited depending on the task type.
 
-This is simple application for keeping track of your tasks.
-User can create three types of tasks. The text task, adding a block of text.
-List task, make a simple list with bullet points. Great for tasks with multiple
-short subtasks. And a checkbox list, simlar to the list task but with posibility
-to check completed subtasks.
-Every task can be modified many options:
+In addition to task creation, user can create project. Project is container for group of tasks with specific projectId. By selecting project in navigation view app will render all tasks grouped in targeted project. Deleting project will not delete all tasks in that project.
 
-- deadline
-- change prority
-- change project
-- delete task
-- edit text task
-- add item to list/checkbox task
-- delete item fro list/checbox task
-- update item in list/chackbox task
+User can view all tasks with selecting all task navigation item or filter task by due date. There are two options for due date filtering. Tasks that have due date today and this week. Tasks are automatically sorted by due date.
 
-In addition of task creation, user can create project and group tasks to specified
-project.
+## What have I learned
 
-User can filter task by projects, and by due date. There are 2 options for due
-date filtering. Tasks that have due date today and this week. Basic filter is
-display all tasks. Tasks are automatically sorted by due date.
-
-arhitecture
-
-## What have i learned
-
-- SOLID principles
-- BEM
-
-## Roadblocks
-
-Updateing tasks from controller file without impotring tasks and project files to
-the taskDom file.
-Planning project.
-
-## Useful resources
-
-Connect class with controller by passing handler functions as params new Navigation(switchHandler, deleteHandler)
-
-Adding new project. User clicks create new project button.
-Inserts name and submit button. Form class takes handler function
-and gives object with project title back. With this object controller creates new project in th projects class. After thet takes all projects form project class and pass it ass hadler to navigation class to render all user projects to the page.
-Navigation class is initialize in the controller and controller pass 2 handler functios as arguments. For switching projects and deleteing projects. Both handlers recive project id from event listeners in Navigation class asscoiete with clicks.
-Switch handlers updates display by changing main headins and display tasks of that project.
-Delete handler removes project form projects class and displays all clears display if deleted project is currently displayed.
-
-Adding new task. User opens new form, inputs data, submit form.
-Form class takes handler for create buton. Handler pass Task object to controller which pass it to Task class and create new task in array. Controller update display.
+- SOLID principles.
+- BEM - naming methodology.
+- Deeper understanding of callback functions, closure, and reference type objects. Passing handlers for event listeners through coordinator class.
