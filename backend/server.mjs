@@ -4,6 +4,8 @@ import express from 'express';
 // middleware
 import notFound from './middleware/notFound.mjs';
 import errorHandler from './middleware/errorHandler.mjs';
+// routes
+import routes from './routes/index.mjs';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,6 +15,7 @@ const app = express();
 // middleware
 app.use(express.json());
 
+app.use(routes);
 // not found and custom error handler
 app.use(notFound);
 app.use(errorHandler);
