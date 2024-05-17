@@ -1,3 +1,16 @@
+const mockTasks = [
+  {
+    id: 'hjiee',
+    name: 'test',
+    description: 'hello world',
+    priority: 'text',
+    projectId: null,
+    deadline: 'test',
+  },
+];
+
+import { validationResult, checkSchema } from 'express-validator';
+
 const getTasks = (req, res) => {
   return res.status(200).json({ msg: 'get all task' });
 };
