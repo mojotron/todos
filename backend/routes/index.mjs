@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import authRouter from './auth.mjs';
 import taskRoutes from './tasks.mjs';
+import projectRoutes from './projects.mjs';
 
 const router = Router();
 
@@ -10,5 +11,6 @@ router.get('/', (req, res) => {
 
 router.use('/api/auth', authRouter);
 router.use('/api/tasks', taskRoutes);
+router.use('/api/projects', projectRoutes);
 
 export default router;
