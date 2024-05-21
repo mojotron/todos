@@ -3,6 +3,7 @@ import url from 'node:url';
 import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
+import MongoStore from 'connect-mongo';
 // middleware
 import notFound from './middleware/notFound.mjs';
 import errorHandler from './middleware/errorHandler.mjs';
@@ -22,12 +23,13 @@ app.use(express.json());
 app.use(
   session({
     secret: process.env.SECRET,
-    saveUninitialized: false,
+    saveUninitialized: true,
     resave: false,
     cookie: {
       maxAge: 360000,
       httpOnly: true,
     },
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   })
 );
 app.use(passport.session());
