@@ -11,6 +11,8 @@ import errorHandler from './middleware/errorHandler.mjs';
 import routes from './routes/index.mjs';
 // mongoose connect
 import connectDB from './utils/connect.mjs';
+//
+import './utils/authStrategies.mjs';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,7 +34,16 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   })
 );
+app.use(passport.initialize());
 app.use(passport.session());
+
+app.use((req, res, next) => {
+  console.log('session----------');
+  console.log(req.session);
+  console.log('session user-----');
+  console.log(req.user);
+  next();
+});
 
 app.use(routes);
 
