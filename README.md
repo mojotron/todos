@@ -1,29 +1,30 @@
-# TO-DO List
+# React + TypeScript + Vite
 
-This project is part of [The Odin Project](https://www.theodinproject.com/) Curriculum.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Try [todos](https://mojotron.github.io/todos/) and organize your tasks, app hosted with the Github Pages.
+Currently, two official plugins are available:
 
-## Todos user guide
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-This is a simple application for keeping track of the tasks. User can create a new task or a new project.
+## Expanding the ESLint configuration
 
-When creating 'new task', user can set title, deadline, priority, task type and group it to an existing project. Task type creates a specific task body.
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-There are three possible task types.
+- Configure the top-level `parserOptions` property like this:
 
-1. Text task, user describes the task with a block of text.
-2. List task, user describes tasks with a list of short descriptions in form of bullet points.
-3. And finally, checkbox task, similar to the list with addition of having a checkbox to keep track of progress. User can cross out the list item clicking on checkbox.
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
+```
 
-After creating the task, it is displayed in the tasks display view. The task can be updated multiple ways, by changing deadline, project id, or priority. The task can be deleted. Body of the task can be edited depending on the task type.
-
-In addition to task creation, user can create project. Project is a container for group of tasks with specific project id. By selecting project in navigation view, application will render all tasks grouped in selected project. Deleting project will not delete all tasks in that project.
-
-User can view all tasks with selecting 'all task' navigation item or filter task by due date. There are two options for due date filtering. Tasks that have due date today and this week. Tasks are automatically sorted by the due date.
-
-## What have I learned
-
-- SOLID principles.
-- BEM - naming methodology.
-- Deeper understanding of callback functions, closure, and reference type objects. Passing handlers to event listeners through coordinator class.
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
