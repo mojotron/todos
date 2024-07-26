@@ -28,12 +28,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className=" bg-gray-700 text-white px-4 py-6 rounded-md">
+    <div className="w-full sm:w-[400px] text-white px-4 py-6 rounded-md">
       <h2 className="font-display text-2xl">create new account</h2>
       <form onSubmit={handleSubmit} className="space-y-2">
         <div className="flex flex-col">
           <label htmlFor="username">email</label>
-          <div className="p-[2px] rounded-md max-w-sm bg-gradient-to-r from-green to-blue">
+          <div className="p-[2px] rounded-md bg-gradient-to-r from-green to-blue">
             <input
               className="w-full rounded-md focus:outline-none bg-white text-gray-700 px-2 py-[3px]"
               type="email"
@@ -47,7 +47,7 @@ const LoginPage = () => {
 
         <div className="flex flex-col">
           <label htmlFor="username">password</label>
-          <div className="p-[2px] rounded-md max-w-sm bg-gradient-to-r from-green to-blue">
+          <div className="p-[2px] rounded-md bg-gradient-to-r from-green to-blue">
             <input
               className="w-full rounded-md focus:outline-none bg-white text-gray-700 px-2 py-[3px]"
               type="password"

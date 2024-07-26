@@ -20,6 +20,7 @@ export default {
         },
         green: "#62f06a",
         blue: "#58e9d3",
+        error: "#fb7185",
       },
       spacing: {
         1: "8px",

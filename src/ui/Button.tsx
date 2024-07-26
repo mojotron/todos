@@ -13,7 +13,7 @@ const Button = ({
 }: PropsType) => {
   return (
     <button
-      className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-white text-md uppercase font-display text-lg rounded-lg group bg-gradient-to-br from-green to-blue group-hover:from-green group-hover:to-blue hover:text-black focus:ring-1 focus:outline-none focus:gray-600 "
+      className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-md font-medium text-white text-md uppercase font-display  rounded-lg group bg-gradient-to-br from-green to-blue group-hover:from-green group-hover:to-blue hover:text-black focus:ring-1 focus:outline-none focus:gray-600 "
       type={type}
       onClick={clickHandler}
     >
