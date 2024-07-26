@@ -4,11 +4,13 @@ import Header from "../components/Header";
 
 const MainLayout = () => {
   return (
-    <main className="min-h-[100vh] min-w-full flex flex-col">
+    <div className="min-h-[100vh] min-w-full flex flex-col bg-gray-800">
       <Header />
-      <Outlet />
+      <main className="flex flex-col items-center py-10">
+        <Outlet />
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 };
 
