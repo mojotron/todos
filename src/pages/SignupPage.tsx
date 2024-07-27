@@ -35,7 +35,7 @@ const SignupPage = () => {
               className="w-full rounded-md focus:outline-none bg-white text-gray-700 px-2 py-[3px]"
               type="text"
               id="username"
-              // required
+              required
               value={formData.username}
               onChange={handleChange}
             />
@@ -52,7 +52,7 @@ const SignupPage = () => {
               className="w-full rounded-md focus:outline-none bg-white text-gray-700 px-2 py-[3px]"
               type="email"
               id="email"
-              // required
+              required
               value={formData.email}
               onChange={handleChange}
             />
@@ -69,7 +69,7 @@ const SignupPage = () => {
               className="w-full rounded-md focus:outline-none bg-white text-gray-700 px-2 py-[3px]"
               type="password"
               id="password"
-              // required
+              required
               value={formData.password}
               onChange={handleChange}
             />
@@ -86,7 +86,7 @@ const SignupPage = () => {
               className="w-full rounded-md focus:outline-none bg-white text-gray-700 px-2 py-[3px]"
               type="password"
               id="confirmPassword"
-              // required
+              required
               value={formData.confirmPassword}
               onChange={handleChange}
             />

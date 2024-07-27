@@ -1,12 +1,15 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import Button from "../ui/Button";
 import { Link } from "react-router-dom";
+import { useLogin } from "../hooks/useLogin";
+import InputError from "../ui/InputError";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const { error, loginUser } = useLogin();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((oldValue) => ({ ...oldValue, [e.target.id]: e.target.value }));
@@ -14,17 +17,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:5000/api/v1/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const json = await res.json();
-      console.log(json);
-    } catch (error) {
-      console.log(error);
-    }
+    await loginUser(formData);
   };
 
   return (
@@ -58,6 +51,8 @@ const LoginPage = () => {
             />
           </div>
         </div>
+
+        {error && <InputError message={error?.errorMessage} />}
 
         <div className="flex justify-center">
           <Button type="submit">Login</Button>

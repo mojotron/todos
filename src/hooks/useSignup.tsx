@@ -2,17 +2,17 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 
+export type InputFieldsErrorType = {
+  errorName: string;
+  errorMessage: string;
+  inputFieldsErrors: { [key: string]: string };
+};
+
 type SignupFormDataType = {
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
-};
-
-type InputFieldsErrorType = {
-  errorName: string;
-  errorMessage: string;
-  inputFieldsErrors: { [key: string]: string };
 };
 
 export const useSignup = () => {
@@ -29,7 +29,6 @@ export const useSignup = () => {
         const response = await axios.post("/auth/signup", { ...data });
         if (response.data.status === "success") {
           setLoading(false);
-          setError(null);
           navigate("/login");
         }
       } catch (error) {
