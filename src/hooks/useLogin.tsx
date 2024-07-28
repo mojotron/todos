@@ -25,6 +25,8 @@ export const useLogin = () => {
         const response = await axios.post("/auth/login", { ...data });
         if (response.data.status === "success") {
           setLoading(false);
+          console.log(response.data.accessToken);
+
           navigate("/");
         }
       } catch (error) {
