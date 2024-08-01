@@ -1,8 +1,9 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Button from "../ui/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
 import InputError from "../ui/InputError";
+import { useAuth } from "../hooks/useAuth";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,14 @@ const LoginPage = () => {
     password: "",
   });
   const { error, loginUser } = useLogin();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user !== null) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((oldValue) => ({ ...oldValue, [e.target.id]: e.target.value }));

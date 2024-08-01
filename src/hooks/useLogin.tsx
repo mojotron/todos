@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "./useAuth";
 
 export type LoginErrorType = {
   errorMessage: string;
@@ -14,7 +14,7 @@ type LoginFormDataType = {
 export const useLogin = () => {
   const [error, setError] = useState<null | LoginErrorType>(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { updateAuth } = useAuth();
 
   const loginUser = useCallback(
     async (data: LoginFormDataType) => {
@@ -25,9 +25,7 @@ export const useLogin = () => {
         const response = await axios.post("/auth/login", { ...data });
         if (response.data.status === "success") {
           setLoading(false);
-          console.log(response.data.accessToken);
-
-          navigate("/");
+          updateAuth(true);
         }
       } catch (error) {
         if (error instanceof AxiosError) {
@@ -39,7 +37,7 @@ export const useLogin = () => {
         setLoading(false);
       }
     },
-    [navigate]
+    [updateAuth]
   );
 
   return { error, loading, loginUser };

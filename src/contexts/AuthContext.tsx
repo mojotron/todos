@@ -1,22 +1,47 @@
-import { ReactNode, createContext, useCallback, useState } from "react";
+import axios from "axios";
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+
+type UserType = {
+  username: string;
+};
 
 const useAuthSource = (): {
-  accessToken: null | string;
-  addToken: (token: string) => void;
-  removeToken: () => void;
+  isAuth: boolean;
+  updateAuth: (value: boolean) => void;
+  user: UserType | null;
 } => {
-  const [accessToken, setAccessToken] = useState<null | string>(null);
+  const [isAuth, setIsAuth] = useState(false);
+  const [user, setUser] = useState<null | UserType>(null);
+  console.log("context", isAuth, user);
 
   // check if token is valid
-  // try to refresh token
+  useEffect(() => {
+    axios
+      .get("/user/profile")
+      .then((response) => {
+        if (response.data.status === "success") {
+          setIsAuth(true);
+          setUser(response.data.user);
+        }
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        setIsAuth(false);
+        setUser(null);
+      });
+  }, [isAuth]);
 
-  const addToken = useCallback((token: string) => {
-    setAccessToken(token);
+  const updateAuth = useCallback((value: boolean) => {
+    setIsAuth(value);
   }, []);
 
-  const removeToken = useCallback(() => {}, []);
-
-  return { accessToken, addToken, removeToken };
+  return { isAuth, updateAuth, user };
 };
 
 export const AuthContext = createContext<ReturnType<typeof useAuthSource>>(
