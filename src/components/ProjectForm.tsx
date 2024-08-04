@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Button from "../ui/Button";
 
-const CreateProjectForm = () => {
+const ProjectForm = () => {
   const [projectName, setProjectName] = useState("");
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(projectName);
+  };
 
   return (
     <div>
       <div className="w-full sm:w-[400px] text-white px-4 py-6 rounded-md bg-gray-900">
         <h2 className="font-display text-2xl">create new project</h2>
-        <form className="space-y-2">
+        <form className="space-y-2" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <label>project name</label>
             <div className="p-[2px] rounded-md bg-gradient-to-r from-green to-blue">
@@ -31,4 +34,4 @@ const CreateProjectForm = () => {
   );
 };
 
-export default CreateProjectForm;
+export default ProjectForm;

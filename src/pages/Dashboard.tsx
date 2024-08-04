@@ -2,7 +2,7 @@ import { FaFolderOpen as IconFolder } from "react-icons/fa6";
 import { FaTasks as IconTasks } from "react-icons/fa";
 import { MdPlaylistAddCircle as IconAddTask } from "react-icons/md";
 import { AiFillFolderAdd as IconAddFolder } from "react-icons/ai";
-import CreateProjectForm from "../components/CreateProjectForm";
+import ProjectForm from "../components/ProjectForm";
 
 const Dashboard = () => {
   return (
@@ -43,7 +43,7 @@ const Dashboard = () => {
       <section>
         <h2>all tasks</h2>
         <section>
-          <CreateProjectForm />
+          <ProjectForm />
         </section>
       </section>
     </div>
