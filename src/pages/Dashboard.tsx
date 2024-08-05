@@ -1,10 +1,14 @@
 import { FaFolderOpen as IconFolder } from "react-icons/fa6";
 import { FaTasks as IconTasks } from "react-icons/fa";
-import { MdPlaylistAddCircle as IconAddTask } from "react-icons/md";
-import { AiFillFolderAdd as IconAddFolder } from "react-icons/ai";
 import ProjectForm from "../components/ProjectForm";
+import { useState } from "react";
+import { useTasks } from "../hooks/useTasks";
+import AsideButton from "../ui/AsideButton";
 
 const Dashboard = () => {
+  const { projects } = useTasks();
+  const [openProjectForm, setOpenProjectForm] = useState(false);
+
   return (
     <div className="min-h-[100vh] flex">
       {/* ASIDE */}
@@ -19,10 +23,7 @@ const Dashboard = () => {
             <li>today</li>
             <li>7 days</li>
           </ul>
-          <button className="flex items-center">
-            <IconAddTask />
-            <span>new task</span>
-          </button>
+          <AsideButton text="new task" clickHandler={() => {}} />
         </div>
 
         <div>
@@ -31,19 +32,25 @@ const Dashboard = () => {
             <span className="relative top-[2px]">projects</span>
           </h3>
           <ul>
-            <li>temp</li>
+            {projects.map((project) => (
+              <li key={project._id}>
+                <h3>{project.projectName}</h3>
+              </li>
+            ))}
           </ul>
-          <button className="flex items-center">
-            <IconAddFolder />
-            <span>new project</span>
-          </button>
+          <AsideButton
+            text="new project"
+            clickHandler={() => setOpenProjectForm(true)}
+          />
         </div>
       </aside>
       {/* TASK DISPLAY */}
       <section>
         <h2>all tasks</h2>
         <section>
-          <ProjectForm />
+          {openProjectForm && (
+            <ProjectForm handleClose={() => setOpenProjectForm(false)} />
+          )}
         </section>
       </section>
     </div>

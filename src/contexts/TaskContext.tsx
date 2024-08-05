@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useCallback, useReducer } from "react";
+import axios from "axios";
 import type ProjectType from "../types/projectType";
 
 type StateType = {
@@ -40,7 +41,7 @@ const taskReducer = (state: StateType, action: ActionsType) => {
 
 const useTaskSource = (): {
   projects: ProjectType[];
-  createProject: (data: ProjectType) => void;
+  createProject: (projectName: string) => void;
   deleteProject: (projectId: string) => void;
   editProject: (projectId: string, newProjectName: string) => void;
 } => {
@@ -49,8 +50,20 @@ const useTaskSource = (): {
     projects: [],
   });
 
-  const createProject = useCallback(async (data: ProjectType) => {
-    dispatch({ type: "project/create", payload: data });
+  const createProject = useCallback(async (projectName: string) => {
+    console.log("hello", projectName);
+
+    axios
+      .post("/project", { projectName })
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === "success") {
+          dispatch({ type: "project/create", payload: response.data.project });
+        }
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
   }, []);
 
   const deleteProject = useCallback(async (projectId: string) => {

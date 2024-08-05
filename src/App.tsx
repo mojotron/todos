@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 // components
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import TaskContextProvider from "./contexts/TaskContext";
 
 axios.defaults.baseURL = "http://localhost:5000/api/v1";
 axios.defaults.withCredentials = true;
@@ -24,7 +25,9 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: (
           <ProtectedRoutes>
-            <Dashboard />
+            <TaskContextProvider>
+              <Dashboard />
+            </TaskContextProvider>
           </ProtectedRoutes>
         ),
       },

@@ -1,17 +1,33 @@
 import { FormEvent, useState } from "react";
 import Button from "../ui/Button";
+import CloseButton from "../ui/CloseButton";
+import { useTasks } from "../hooks/useTasks";
 
-const ProjectForm = () => {
+type PropsType = {
+  projectId?: null | string;
+  handleClose: () => void;
+};
+
+const ProjectForm = ({ projectId = null, handleClose }: PropsType) => {
   const [projectName, setProjectName] = useState("");
+  const { createProject } = useTasks();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(projectName);
+    console.log("handle submit");
+
+    if (projectId === null) {
+      console.log("no id");
+
+      createProject(projectName);
+      handleClose();
+    }
   };
 
   return (
     <div>
-      <div className="w-full sm:w-[400px] text-white px-4 py-6 rounded-md bg-gray-900">
+      <div className="relative w-full sm:w-[400px] text-white px-4 py-6 rounded-md bg-gray-900">
+        <CloseButton handleClick={handleClose} />
         <h2 className="font-display text-2xl">create new project</h2>
         <form className="space-y-2" onSubmit={handleSubmit}>
           <div className="flex flex-col">

@@ -7,7 +7,7 @@ type PropsType = {
 };
 
 const Button = ({
-  type = "button",
+  type = "submit",
   clickHandler = undefined,
   children,
 }: PropsType) => {
