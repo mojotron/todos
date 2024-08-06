@@ -8,7 +8,7 @@ type PropsType = {
 const AsideButton = ({ text, clickHandler }: PropsType) => {
   return (
     <button
-      className="flex items-center gap-[2px] text-blue"
+      className="flex items-center gap-[2px] text-blue hover:text-green"
       type="button"
       onClick={clickHandler}
     >

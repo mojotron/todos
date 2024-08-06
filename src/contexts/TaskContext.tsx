@@ -1,12 +1,23 @@
-import { ReactNode, createContext, useCallback, useReducer } from "react";
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useReducer,
+} from "react";
 import axios from "axios";
 import type ProjectType from "../types/projectType";
+import { ActiveListType, ActiveListDefaults } from "../types/activeListType";
 
 type StateType = {
+  activeList: ActiveListType;
   tasks: [];
   projects: ProjectType[];
 };
+
 type ActionsType =
+  | { type: "activeList/change"; payload: ActiveListType }
+  | { type: "project/getAll"; payload: ProjectType[] }
   | { type: "project/create"; payload: ProjectType }
   | { type: "project/delete"; payload: string }
   | {
@@ -16,6 +27,10 @@ type ActionsType =
 
 const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
+    case "activeList/change":
+      return { ...state, activeList: action.payload };
+    case "project/getAll":
+      return { ...state, projects: action.payload };
     case "project/create":
       return { ...state, projects: [...state.projects, action.payload] };
     case "project/delete":
@@ -40,21 +55,42 @@ const taskReducer = (state: StateType, action: ActionsType) => {
 };
 
 const useTaskSource = (): {
+  activeList: ActiveListType;
+  changeActiveList: (listName: ActiveListType) => void;
   projects: ProjectType[];
   createProject: (projectName: string) => void;
   deleteProject: (projectId: string) => void;
   editProject: (projectId: string, newProjectName: string) => void;
 } => {
-  const [{ projects }, dispatch] = useReducer(taskReducer, {
+  const [{ projects, activeList }, dispatch] = useReducer(taskReducer, {
     tasks: [],
     projects: [],
+    activeList: ActiveListDefaults.all,
   });
+
+  useEffect(() => {
+    axios
+      .get("/projects")
+      .then((response) => {
+        if (response.data.status === "success") {
+          dispatch({ type: "project/getAll", payload: response.data.projects });
+        }
+      })
+      .catch();
+  }, []);
+
+  const changeActiveList = useCallback(
+    (listName: ActiveListDefaults | string) => {
+      dispatch({ type: "activeList/change", payload: listName });
+    },
+    []
+  );
 
   const createProject = useCallback(async (projectName: string) => {
     console.log("hello", projectName);
 
     axios
-      .post("/project", { projectName })
+      .post("/projects", { projectName })
       .then((response) => {
         console.log(response);
         if (response.data.status === "success") {
@@ -80,7 +116,14 @@ const useTaskSource = (): {
     []
   );
 
-  return { projects, createProject, deleteProject, editProject };
+  return {
+    activeList,
+    changeActiveList,
+    projects,
+    createProject,
+    deleteProject,
+    editProject,
+  };
 };
 
 export const TaskContext = createContext<ReturnType<typeof useTaskSource>>(
