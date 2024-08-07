@@ -5,15 +5,15 @@ import AuthContextProvider from "../contexts/AuthContext";
 
 const MainLayout = () => {
   return (
-    <div className="min-h-[100vh] min-w-full flex flex-col bg-gray-800">
-      <AuthContextProvider>
+    <AuthContextProvider>
+      <div className="min-w-full min-h-[100vh] flex flex-col bg-gray-800">
         <Header />
-        <main>
+        <main className="h-full">
           <Outlet />
         </main>
         <Footer />
-      </AuthContextProvider>
-    </div>
+      </div>
+    </AuthContextProvider>
   );
 };
 

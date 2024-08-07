@@ -1,15 +1,24 @@
 import { useTasks } from "../hooks/useTasks";
 import { ActiveListDefaults } from "../types/activeListType";
-
+// icons
 import { BiEdit, BiTrash } from "react-icons/bi";
 
+import OverlayWrapper from "../ui/OverlayWrapper";
+import ProjectForm from "./ProjectForm";
+
 const TasksDashboard = () => {
-  const { activeList } = useTasks();
+  const { activeList, openProjectForm, toggleProjectForm } = useTasks();
   // for displaying project management controls
   const defaultList = Object.keys(ActiveListDefaults).includes(activeList);
 
   return (
-    <section>
+    <section className="w-full p-4">
+      {openProjectForm && (
+        <OverlayWrapper>
+          <ProjectForm handleClose={toggleProjectForm} />
+        </OverlayWrapper>
+      )}
+
       <header className="w-full flex justify-between">
         <h2 className="text-white font-display text-3xl">{activeList}</h2>
         {!defaultList && (

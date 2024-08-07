@@ -1,18 +1,19 @@
-import { useState } from "react";
 // icons
 import { FaFolderOpen as IconFolder } from "react-icons/fa6";
 import { FaTasks as IconTasks } from "react-icons/fa";
 // components
-import ProjectForm from "../components/ProjectForm";
+
 import AsideButton from "../ui/AsideButton";
 import ProjectsList from "../components/ProjectsList";
 import TasksDashboard from "../components/TasksDashboard";
 
+import { useTasks } from "../hooks/useTasks";
+
 const Dashboard = () => {
-  const [openProjectForm, setOpenProjectForm] = useState(false);
+  const { toggleProjectForm } = useTasks();
 
   return (
-    <div className="min-h-[100vh] flex">
+    <div className="flex min-w-full">
       {/* ASIDE */}
       <aside className="w-[200px] bg-gray-700 p-4 space-y-4">
         <div>
@@ -36,18 +37,13 @@ const Dashboard = () => {
           <ProjectsList />
           <AsideButton
             text="new project"
-            clickHandler={() => setOpenProjectForm(true)}
+            clickHandler={() => toggleProjectForm()}
           />
         </div>
       </aside>
       {/* TASK DISPLAY */}
-      <section className="w-full p-4">
-        {openProjectForm && (
-          <ProjectForm handleClose={() => setOpenProjectForm(false)} />
-        )}
 
-        <TasksDashboard />
-      </section>
+      <TasksDashboard />
     </div>
   );
 };

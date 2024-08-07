@@ -11,12 +11,14 @@ import { ActiveListType, ActiveListDefaults } from "../types/activeListType";
 
 type StateType = {
   activeList: ActiveListType;
+  openProjectForm: boolean;
   tasks: [];
   projects: ProjectType[];
 };
 
 type ActionsType =
   | { type: "activeList/change"; payload: ActiveListType }
+  | { type: "toggle/projectForm" }
   | { type: "project/getAll"; payload: ProjectType[] }
   | { type: "project/create"; payload: ProjectType }
   | { type: "project/delete"; payload: string }
@@ -29,6 +31,8 @@ const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
     case "activeList/change":
       return { ...state, activeList: action.payload };
+    case "toggle/projectForm":
+      return { ...state, openProjectForm: !state.openProjectForm };
     case "project/getAll":
       return { ...state, projects: action.payload };
     case "project/create":
@@ -57,16 +61,22 @@ const taskReducer = (state: StateType, action: ActionsType) => {
 const useTaskSource = (): {
   activeList: ActiveListType;
   changeActiveList: (listName: ActiveListType) => void;
+  openProjectForm: boolean;
+  toggleProjectForm: () => void;
   projects: ProjectType[];
   createProject: (projectName: string) => void;
   deleteProject: (projectId: string) => void;
   editProject: (projectId: string, newProjectName: string) => void;
 } => {
-  const [{ projects, activeList }, dispatch] = useReducer(taskReducer, {
-    tasks: [],
-    projects: [],
-    activeList: ActiveListDefaults.all,
-  });
+  const [{ projects, activeList, openProjectForm }, dispatch] = useReducer(
+    taskReducer,
+    {
+      tasks: [],
+      projects: [],
+      activeList: ActiveListDefaults.all,
+      openProjectForm: false,
+    }
+  );
 
   useEffect(() => {
     axios
@@ -116,9 +126,15 @@ const useTaskSource = (): {
     []
   );
 
+  const toggleProjectForm = useCallback(() => {
+    dispatch({ type: "toggle/projectForm" });
+  }, []);
+
   return {
     activeList,
     changeActiveList,
+    openProjectForm,
+    toggleProjectForm,
     projects,
     createProject,
     deleteProject,
