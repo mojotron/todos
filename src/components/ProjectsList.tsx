@@ -1,7 +1,7 @@
 import { useTasks } from "../hooks/useTasks";
 
 const ProjectsList = () => {
-  const { projects, changeActiveList } = useTasks();
+  const { projects, setActiveProject } = useTasks();
 
   return (
     <ul className="text-white space-y-1 pb-2 w-full">
@@ -10,7 +10,7 @@ const ProjectsList = () => {
           <button
             className=" hover:text-green"
             type="button"
-            onClick={() => changeActiveList(project.projectName)}
+            onClick={() => setActiveProject(project.projectName)}
           >
             {project.projectName}
           </button>

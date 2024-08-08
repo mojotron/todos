@@ -14,6 +14,7 @@ type StateType = {
   openProjectForm: boolean;
   tasks: [];
   projects: ProjectType[];
+  activeProject: ProjectType | undefined;
 };
 
 type ActionsType =
@@ -25,7 +26,8 @@ type ActionsType =
   | {
       type: "project/edit";
       payload: { projectId: string; newProjectName: string };
-    };
+    }
+  | { type: "project/active"; payload: string | null };
 
 const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
@@ -53,6 +55,13 @@ const taskReducer = (state: StateType, action: ActionsType) => {
             : project
         ),
       };
+    case "project/active":
+      return {
+        ...state,
+        activeProject: state.projects.find(
+          (project) => project.projectName === action.payload
+        ),
+      };
     default:
       return { ...state };
   }
@@ -67,16 +76,17 @@ const useTaskSource = (): {
   createProject: (projectName: string) => void;
   deleteProject: (projectId: string) => void;
   editProject: (projectId: string, newProjectName: string) => void;
+  activeProject: ProjectType | undefined;
+  setActiveProject: (project: string) => void;
 } => {
-  const [{ projects, activeList, openProjectForm }, dispatch] = useReducer(
-    taskReducer,
-    {
+  const [{ projects, activeList, openProjectForm, activeProject }, dispatch] =
+    useReducer(taskReducer, {
       tasks: [],
       projects: [],
       activeList: ActiveListDefaults.all,
       openProjectForm: false,
-    }
-  );
+      activeProject: undefined,
+    });
 
   useEffect(() => {
     axios
@@ -130,6 +140,10 @@ const useTaskSource = (): {
     dispatch({ type: "toggle/projectForm" });
   }, []);
 
+  const setActiveProject = useCallback((project: string) => {
+    dispatch({ type: "project/active", payload: project });
+  }, []);
+
   return {
     activeList,
     changeActiveList,
@@ -139,6 +153,8 @@ const useTaskSource = (): {
     createProject,
     deleteProject,
     editProject,
+    activeProject,
+    setActiveProject,
   };
 };
 

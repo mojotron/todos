@@ -8,7 +8,7 @@ const MainLayout = () => {
     <AuthContextProvider>
       <div className="min-w-full min-h-[100vh] flex flex-col bg-gray-800">
         <Header />
-        <main className="h-full">
+        <main className="flex-grow">
           <Outlet />
         </main>
         <Footer />

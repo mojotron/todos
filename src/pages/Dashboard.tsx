@@ -13,9 +13,9 @@ const Dashboard = () => {
   const { toggleProjectForm } = useTasks();
 
   return (
-    <div className="flex min-w-full">
+    <div className="flex w-full">
       {/* ASIDE */}
-      <aside className="w-[200px] bg-gray-700 p-4 space-y-4">
+      <aside className="w-[200px] bg-gray-700  p-4 space-y-4">
         <div>
           <h3 className="font-bold font-display text-gray-300 text-lg flex gap-1 items-center">
             <IconTasks />
