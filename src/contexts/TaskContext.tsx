@@ -73,7 +73,7 @@ const useTaskSource = (): {
   openProjectForm: boolean;
   toggleProjectForm: () => void;
   projects: ProjectType[];
-  createProject: (projectName: string) => void;
+  createProject: (projectName: string) => Promise<void>;
   deleteProject: (projectId: string) => void;
   editProject: (projectId: string, newProjectName: string) => void;
   activeProject: ProjectType | undefined;
@@ -107,19 +107,14 @@ const useTaskSource = (): {
   );
 
   const createProject = useCallback(async (projectName: string) => {
-    console.log("hello", projectName);
-
-    axios
-      .post("/projects", { projectName })
-      .then((response) => {
-        console.log(response);
-        if (response.data.status === "success") {
-          dispatch({ type: "project/create", payload: response.data.project });
-        }
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+    try {
+      const response = await axios.post("/projects", { projectName });
+      if (response.data.status === "success") {
+        dispatch({ type: "project/create", payload: response.data.project });
+      }
+    } catch (error) {
+      throw error;
+    }
   }, []);
 
   const deleteProject = useCallback(async (projectId: string) => {
