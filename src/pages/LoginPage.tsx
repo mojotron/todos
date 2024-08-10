@@ -30,7 +30,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="w-full sm:w-[400px] text-white px-4 py-6 rounded-md">
+    <div className="w-full mx-auto items-center sm:w-[400px] text-white px-4 py-6 rounded-md">
       <h2 className="font-display text-2xl">create new account</h2>
       <form onSubmit={handleSubmit} className="space-y-2">
         <div className="flex flex-col">

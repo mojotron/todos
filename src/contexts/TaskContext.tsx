@@ -38,13 +38,18 @@ const taskReducer = (state: StateType, action: ActionsType) => {
     case "project/getAll":
       return { ...state, projects: action.payload };
     case "project/create":
-      return { ...state, projects: [...state.projects, action.payload] };
+      return {
+        ...state,
+        projects: [...state.projects, action.payload],
+        openProjectForm: false,
+      };
     case "project/delete":
       return {
         ...state,
         projects: state.projects.filter(
           (project) => project._id !== action.payload
         ),
+        activeProject: undefined,
       };
     case "project/edit":
       return {
@@ -118,7 +123,14 @@ const useTaskSource = (): {
   }, []);
 
   const deleteProject = useCallback(async (projectId: string) => {
-    dispatch({ type: "project/delete", payload: projectId });
+    try {
+      const response = await axios.delete(`/projects/${projectId}`);
+      if (response.data.status === "success") {
+        dispatch({ type: "project/delete", payload: projectId });
+      }
+    } catch (error) {
+      throw error;
+    }
   }, []);
 
   const editProject = useCallback(
