@@ -1,7 +1,5 @@
 import { useTasks } from "../hooks/useTasks";
 //import { ActiveListDefaults } from "../types/activeListType";
-
-import OverlayWrapper from "../ui/OverlayWrapper";
 import ProjectForm from "./ProjectForm";
 import ProjectDisplay from "./ProjectDisplay";
 
@@ -12,11 +10,7 @@ const TasksDashboard = () => {
 
   return (
     <section className="w-full p-4">
-      {openProjectForm && (
-        <OverlayWrapper>
-          <ProjectForm handleClose={toggleProjectForm} />
-        </OverlayWrapper>
-      )}
+      {openProjectForm && <ProjectForm handleClose={toggleProjectForm} />}
 
       {activeProject && <ProjectDisplay />}
     </section>

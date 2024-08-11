@@ -59,6 +59,7 @@ const taskReducer = (state: StateType, action: ActionsType) => {
             ? { ...project, projectName: action.payload.newProjectName }
             : project
         ),
+        openProjectForm: false,
       };
     case "project/active":
       return {
@@ -135,10 +136,19 @@ const useTaskSource = (): {
 
   const editProject = useCallback(
     async (projectId: string, newProjectName: string) => {
-      dispatch({
-        type: "project/edit",
-        payload: { projectId, newProjectName },
-      });
+      try {
+        const response = await axios.patch(`/projects/${projectId}`, {
+          projectName: newProjectName,
+        });
+        if (response.data.status === "success") {
+          dispatch({
+            type: "project/edit",
+            payload: { projectId, newProjectName },
+          });
+        }
+      } catch (error) {
+        throw error;
+      }
     },
     []
   );
