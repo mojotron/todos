@@ -56,10 +56,14 @@ const taskReducer = (state: StateType, action: ActionsType) => {
         ...state,
         projects: state.projects.map((project) =>
           project._id === action.payload.projectId
-            ? { ...project, projectName: action.payload.newProjectName }
+            ? { _id: project._id, projectName: action.payload.newProjectName }
             : project
         ),
         openProjectForm: false,
+        activeProject: {
+          ...state.activeProject,
+          projectName: action.payload.newProjectName,
+        } as ProjectType,
       };
     case "project/active":
       return {

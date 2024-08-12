@@ -1,18 +1,18 @@
 import { FormEvent, useState } from "react";
+import { useTasks } from "../hooks/useTasks";
+import { useCreateProject } from "../hooks/useCreateProject";
+// components
 import Button from "../ui/Button";
 import CloseButton from "../ui/CloseButton";
-import { useCreateProject } from "../hooks/useCreateProject";
 import InputError from "../ui/InputError";
-import { useTasks } from "../hooks/useTasks";
 import OverlayWrapper from "../ui/OverlayWrapper";
 
 type PropsType = {
   editActiveProject?: boolean;
-  handleClose: () => void;
 };
 
-const ProjectForm = ({ editActiveProject = false, handleClose }: PropsType) => {
-  const { activeProject, editProject } = useTasks();
+const ProjectForm = ({ editActiveProject = false }: PropsType) => {
+  const { activeProject, toggleProjectForm } = useTasks();
 
   const [projectName, setProjectName] = useState(() =>
     editActiveProject === true && activeProject
@@ -20,18 +20,14 @@ const ProjectForm = ({ editActiveProject = false, handleClose }: PropsType) => {
       : ""
   );
 
-  const { loading, error, addProject } = useCreateProject();
+  const { loading, error, addProject, updateProject } = useCreateProject();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    try {
-      e.preventDefault();
-      if (editActiveProject && activeProject) {
-        await editProject(activeProject?._id, projectName);
-      } else {
-        await addProject(projectName);
-      }
-    } catch (error) {
-      console.log(error);
+    e.preventDefault();
+    if (editActiveProject && activeProject) {
+      await updateProject(activeProject?._id, projectName);
+    } else {
+      await addProject(projectName);
     }
   };
 
@@ -39,7 +35,7 @@ const ProjectForm = ({ editActiveProject = false, handleClose }: PropsType) => {
     <OverlayWrapper>
       <div>
         <div className="relative w-full sm:w-[400px] text-white px-4 py-6 rounded-md bg-gray-900">
-          <CloseButton handleClick={handleClose} />
+          <CloseButton handleClick={toggleProjectForm} />
           <h2 className="font-display text-2xl">
             {editActiveProject ? `edit existing project` : "create new project"}
           </h2>
@@ -60,7 +56,9 @@ const ProjectForm = ({ editActiveProject = false, handleClose }: PropsType) => {
               )}
             </div>
 
-            <Button>{editActiveProject ? "rename" : "create"} project</Button>
+            <Button disabled={loading}>
+              {editActiveProject ? "rename" : "create"} project
+            </Button>
           </form>
         </div>
       </div>

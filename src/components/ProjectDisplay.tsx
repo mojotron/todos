@@ -6,10 +6,10 @@ import ConfirmBox from "./ConfirmBox";
 import ProjectForm from "./ProjectForm";
 
 const ProjectDisplay = () => {
-  const { activeProject, deleteProject } = useTasks();
+  const { activeProject, openProjectForm, deleteProject, toggleProjectForm } =
+    useTasks();
 
   const [openConfirmBox, setOpenConfirmBox] = useState(false);
-  const [openEditProject, setOpenEditProject] = useState(false);
 
   const handleDeleteProject = async () => {
     if (!activeProject) return;
@@ -33,12 +33,7 @@ const ProjectDisplay = () => {
         />
       )}
 
-      {openEditProject && (
-        <ProjectForm
-          editActiveProject={true}
-          handleClose={() => setOpenEditProject(false)}
-        />
-      )}
+      {openProjectForm && <ProjectForm editActiveProject={true} />}
 
       <header className="w-full flex justify-between">
         <h2 className="text-white font-display text-3xl">
@@ -47,7 +42,7 @@ const ProjectDisplay = () => {
 
         <div>
           <button
-            onClick={() => setOpenEditProject(true)}
+            onClick={toggleProjectForm}
             className="flex items-center gap-[2px] text-gray-300 hover:text-green "
           >
             <BiEdit />

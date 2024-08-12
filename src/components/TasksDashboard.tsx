@@ -4,13 +4,13 @@ import ProjectForm from "./ProjectForm";
 import ProjectDisplay from "./ProjectDisplay";
 
 const TasksDashboard = () => {
-  const { openProjectForm, toggleProjectForm, activeProject } = useTasks();
+  const { openProjectForm, activeProject } = useTasks();
   // for displaying project management controls
   // const defaultList = Object.keys(ActiveListDefaults).includes(activeList);
 
   return (
     <section className="w-full p-4">
-      {openProjectForm && <ProjectForm handleClose={toggleProjectForm} />}
+      {openProjectForm && <ProjectForm />}
 
       {activeProject && <ProjectDisplay />}
     </section>
