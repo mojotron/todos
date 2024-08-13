@@ -15,11 +15,13 @@ type StateType = {
   tasks: [];
   projects: ProjectType[];
   activeProject: ProjectType | undefined;
+  openTaskForm: boolean;
 };
 
 type ActionsType =
   | { type: "activeList/change"; payload: ActiveListType }
   | { type: "toggle/projectForm" }
+  | { type: "toggle/taskForm" }
   | { type: "project/getAll"; payload: ProjectType[] }
   | { type: "project/create"; payload: ProjectType }
   | { type: "project/delete"; payload: string }
@@ -35,6 +37,8 @@ const taskReducer = (state: StateType, action: ActionsType) => {
       return { ...state, activeList: action.payload };
     case "toggle/projectForm":
       return { ...state, openProjectForm: !state.openProjectForm };
+    case "toggle/taskForm":
+      return { ...state, openTaskForm: !state.openTaskForm };
     case "project/getAll":
       return { ...state, projects: action.payload };
     case "project/create":
@@ -88,15 +92,20 @@ const useTaskSource = (): {
   editProject: (projectId: string, newProjectName: string) => void;
   activeProject: ProjectType | undefined;
   setActiveProject: (project: string) => void;
+  openTaskForm: boolean;
+  toggleTaskForm: () => void;
 } => {
-  const [{ projects, activeList, openProjectForm, activeProject }, dispatch] =
-    useReducer(taskReducer, {
-      tasks: [],
-      projects: [],
-      activeList: ActiveListDefaults.all,
-      openProjectForm: false,
-      activeProject: undefined,
-    });
+  const [
+    { projects, activeList, openProjectForm, activeProject, openTaskForm },
+    dispatch,
+  ] = useReducer(taskReducer, {
+    tasks: [],
+    projects: [],
+    activeList: ActiveListDefaults.all,
+    openProjectForm: false,
+    activeProject: undefined,
+    openTaskForm: false,
+  });
 
   useEffect(() => {
     axios
@@ -161,6 +170,10 @@ const useTaskSource = (): {
     dispatch({ type: "toggle/projectForm" });
   }, []);
 
+  const toggleTaskForm = useCallback(() => {
+    dispatch({ type: "toggle/taskForm" });
+  }, []);
+
   const setActiveProject = useCallback((project: string) => {
     dispatch({ type: "project/active", payload: project });
   }, []);
@@ -176,6 +189,8 @@ const useTaskSource = (): {
     editProject,
     activeProject,
     setActiveProject,
+    openTaskForm,
+    toggleTaskForm,
   };
 };
 

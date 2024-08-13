@@ -10,7 +10,7 @@ import TasksDashboard from "../components/TasksDashboard";
 import { useTasks } from "../hooks/useTasks";
 
 const Dashboard = () => {
-  const { toggleProjectForm } = useTasks();
+  const { toggleProjectForm, toggleTaskForm } = useTasks();
 
   return (
     <div className="flex w-full">
@@ -26,7 +26,7 @@ const Dashboard = () => {
             <li>today</li>
             <li>7 days</li>
           </ul>
-          <AsideButton text="new task" clickHandler={() => {}} />
+          <AsideButton text="new task" clickHandler={toggleTaskForm} />
         </div>
 
         <div>
@@ -35,10 +35,7 @@ const Dashboard = () => {
             <span className="relative top-[2px]">projects</span>
           </h3>
           <ProjectsList />
-          <AsideButton
-            text="new project"
-            clickHandler={() => toggleProjectForm()}
-          />
+          <AsideButton text="new project" clickHandler={toggleProjectForm} />
         </div>
       </aside>
       {/* TASK DISPLAY */}
