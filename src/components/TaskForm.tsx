@@ -5,6 +5,7 @@ import OverlayWrapper from "../ui/OverlayWrapper";
 import Button from "../ui/Button";
 //
 import type TaskType from "../types/taskType";
+import TaskTypeCreator from "./TaskTypeCreator";
 
 const TaskForm = () => {
   const { toggleTaskForm } = useTasks();
@@ -63,6 +64,8 @@ const TaskForm = () => {
                 }
               />
             </div>
+
+            <TaskTypeCreator />
           </div>
 
           <Button>Create Task</Button>
