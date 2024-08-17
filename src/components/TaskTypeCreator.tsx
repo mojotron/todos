@@ -1,23 +1,32 @@
 import { useState } from "react";
 import { TaskOptionType } from "../types/taskType";
 import { TASK_TYPES } from "../constants/taskConstants";
-import Button from "../ui/Button";
 
 const TaskTypeCreator = () => {
   const [activeType, setActiveType] = useState<TaskOptionType>("text");
   const [assignment, setAssignment] = useState({
     text: "",
     list: ["alpha", "beta"],
+    checkbox: [
+      { checked: false, value: "alpha" },
+      { checked: true, value: "beta" },
+    ],
   });
 
   const [listItem, setListItem] = useState("");
   const [itemIndex, setItemIndex] = useState<null | number>(null);
   // list type handlers
+  const cancelEditListItem = () => {
+    setItemIndex(null);
+    setListItem("");
+  };
+
   const removeListItem = (index: number) => {
     setAssignment((oldValue) => ({
       ...oldValue,
       list: oldValue.list.filter((_, i) => i !== index),
     }));
+    cancelEditListItem();
   };
 
   const addListItem = () => {
@@ -34,18 +43,52 @@ const TaskTypeCreator = () => {
     setListItem(assignment.list[index]);
   };
 
-  const cancelEditListItem = () => {
-    setItemIndex(null);
-    setListItem("");
-  };
-
   const updateListItem = () => {
     setAssignment((oldValue) => ({
       ...oldValue,
       list: oldValue.list.map((item, i) => (i === itemIndex ? listItem : item)),
     }));
-    setItemIndex(null);
-    setListItem("");
+    cancelEditListItem();
+  };
+
+  // checkbox handlers
+  const toggleItemChecked = (index: number) => {
+    setAssignment((oldValue) => ({
+      ...oldValue,
+      checkbox: oldValue.checkbox.map((ele, i) =>
+        i === index ? { ...ele, checked: !ele.checked } : ele
+      ),
+    }));
+  };
+
+  const removeCheckBoxItem = (index: number) => {
+    setAssignment((oldValue) => ({
+      ...oldValue,
+      checkbox: oldValue.checkbox.filter((_, i) => i !== index),
+    }));
+  };
+
+  const addCheckBoxItem = () => {
+    setAssignment((oldValue) => ({
+      ...oldValue,
+      checkbox: [...oldValue.checkbox, { checked: false, value: listItem }],
+    }));
+    cancelEditListItem();
+  };
+
+  const setEditCheckBoxItem = (index: number) => {
+    setItemIndex(index);
+    setListItem(assignment.checkbox[index].value);
+  };
+
+  const updateCheckBoxItem = () => {
+    setAssignment((oldValue) => ({
+      ...oldValue,
+      checkbox: oldValue.checkbox.map((item, i) =>
+        i === itemIndex ? { ...item, value: listItem } : item
+      ),
+    }));
+    cancelEditListItem();
   };
 
   return (
@@ -69,6 +112,7 @@ const TaskTypeCreator = () => {
         ))}
       </section>
       <section>
+        {/* TEXT OPTION */}
         {activeType === "text" && (
           <div className="flex flex-col">
             <label htmlFor="textTask">task description</label>
@@ -85,19 +129,27 @@ const TaskTypeCreator = () => {
           </div>
         )}
 
+        {/* LIST OPTION*/}
         {activeType === "list" && (
           <div className="flex-flex-col">
-            <ul className="space-y-1">
+            <ul className="space-y-1 mb-1">
               {assignment.list.map((item, i) => (
                 <li
-                  className="border px-2 py-0.5 rounded-md flex justify-between items-center"
+                  className={`border px-2 py-0.5 rounded-md flex justify-between items-start gap-2 ${
+                    i === itemIndex ? "border-blue text-blue" : "border-white"
+                  }`}
                   key={i}
                 >
-                  <p>{item}</p>
-                  <div className="space-x-1 text-sm">
+                  <p className="space-x-1">
+                    <span className="text-sm text-gray-400">{i + 1}.</span>
+                    <span>{item}</span>
+                  </p>
+                  <div className="space-x-1 text-sm flex">
                     <button
                       type="button"
-                      className="text-gray-400 hover:text-green"
+                      className={`hover:text-green ${
+                        i === itemIndex ? "text-blue" : "text-gray-400"
+                      }`}
                       onClick={() => setEditListItem(i)}
                     >
                       edit
@@ -134,6 +186,80 @@ const TaskTypeCreator = () => {
                 </>
               ) : (
                 <button type="button" onClick={addListItem}>
+                  add
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* CHECKBOX OPTION */}
+        {activeType === "checkbox" && (
+          <div className="flex-flex-col">
+            <div className="space-y-1 mb-2">
+              {assignment.checkbox.map((item, i) => (
+                <li
+                  className={`border px-2 py-0.5 rounded-md flex justify-between items-center ${
+                    i === itemIndex ? "border-blue text-blue" : "border-white"
+                  }`}
+                  key={i}
+                >
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      checked={item.checked}
+                      onChange={() => toggleItemChecked(i)}
+                    />
+                    <p
+                      className={`${
+                        item.checked ? "line-through" : "no-line-through"
+                      }`}
+                    >
+                      {item.value}
+                    </p>
+                  </div>
+                  <div className="space-x-1 text-sm">
+                    <button
+                      type="button"
+                      className={`hover:text-green ${
+                        i === itemIndex ? "text-blue" : "text-gray-400"
+                      }`}
+                      onClick={() => setEditCheckBoxItem(i)}
+                    >
+                      edit
+                    </button>
+                    <button
+                      type="button"
+                      className="text-gray-400 hover:text-error"
+                      onClick={() => removeCheckBoxItem(i)}
+                    >
+                      remove
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </div>
+            <div className="flex justify-between gap-2">
+              <div className="p-[2px] flex-grow rounded-md bg-gradient-to-r from-green to-blue">
+                <input
+                  type="text"
+                  className="w-full rounded-md focus:outline-none bg-white text-gray-700 px-2 py-[3px]"
+                  value={listItem}
+                  onChange={(e) => setListItem(e.target.value)}
+                />
+              </div>
+
+              {itemIndex !== null ? (
+                <>
+                  <button type="button" onClick={cancelEditListItem}>
+                    cancel
+                  </button>
+                  <button type="button" onClick={updateCheckBoxItem}>
+                    update
+                  </button>
+                </>
+              ) : (
+                <button type="button" onClick={addCheckBoxItem}>
                   add
                 </button>
               )}
