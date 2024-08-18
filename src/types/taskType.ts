@@ -6,9 +6,10 @@ export type TaskPriorityType = (typeof priorities)[number];
 const taskOptions = [...TASK_TYPES] as const;
 export type TaskOptionType = (typeof taskOptions)[number];
 
-type TaskDescription = {
-  checked: boolean;
+export type TaskAssignment = {
   text: string;
+  list: string[];
+  checkbox: { checked: boolean; value: string }[];
 };
 
 export type TaskType = {
@@ -18,7 +19,6 @@ export type TaskType = {
   priority: TaskPriorityType;
   option: TaskOptionType;
   projectId: undefined | string;
-  description: TaskDescription[];
 };
 
 export default TaskType;

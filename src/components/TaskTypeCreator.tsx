@@ -1,17 +1,14 @@
-import { useState } from "react";
-import { TaskOptionType } from "../types/taskType";
+import { Dispatch, SetStateAction, useState } from "react";
+import { TaskAssignment, TaskOptionType } from "../types/taskType";
 import { TASK_TYPES } from "../constants/taskConstants";
 
-const TaskTypeCreator = () => {
+type PropsType = {
+  assignment: TaskAssignment;
+  setAssignment: Dispatch<SetStateAction<TaskAssignment>>;
+};
+
+const TaskTypeCreator = ({ assignment, setAssignment }: PropsType) => {
   const [activeType, setActiveType] = useState<TaskOptionType>("text");
-  const [assignment, setAssignment] = useState({
-    text: "",
-    list: ["alpha", "beta"],
-    checkbox: [
-      { checked: false, value: "alpha" },
-      { checked: true, value: "beta" },
-    ],
-  });
 
   const [listItem, setListItem] = useState("");
   const [itemIndex, setItemIndex] = useState<null | number>(null);
@@ -92,7 +89,7 @@ const TaskTypeCreator = () => {
   };
 
   return (
-    <div className="py-4">
+    <div className="">
       <h3>choose task assignment type</h3>
 
       <section className="p-2 space-x-1">
