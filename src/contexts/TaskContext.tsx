@@ -8,6 +8,7 @@ import {
 import axios from "axios";
 import type ProjectType from "../types/projectType";
 import { ActiveListType, ActiveListDefaults } from "../types/activeListType";
+import TaskType, { TaskAssignment } from "../types/taskType";
 
 type StateType = {
   activeList: ActiveListType;
@@ -29,7 +30,8 @@ type ActionsType =
       type: "project/edit";
       payload: { projectId: string; newProjectName: string };
     }
-  | { type: "project/active"; payload: string | null };
+  | { type: "project/active"; payload: string | null }
+  | { type: "task/create" };
 
 const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
@@ -76,6 +78,8 @@ const taskReducer = (state: StateType, action: ActionsType) => {
           (project) => project.projectName === action.payload
         ),
       };
+    case "task/create":
+      return { ...state };
     default:
       return { ...state };
   }
@@ -94,6 +98,7 @@ const useTaskSource = (): {
   setActiveProject: (project: string) => void;
   openTaskForm: boolean;
   toggleTaskForm: () => void;
+  createTask: (task: TaskType, assignment: ActionsType) => void;
 } => {
   const [
     { projects, activeList, openProjectForm, activeProject, openTaskForm },
@@ -178,6 +183,21 @@ const useTaskSource = (): {
     dispatch({ type: "project/active", payload: project });
   }, []);
 
+  const createTask = useCallback(
+    async (task: TaskType, assignment: TaskAssignment) => {
+      try {
+        const response = await axios.post(`/tasks/`, { ...task, assignment });
+        if (response.data.status === "success") {
+          const { title } = response.data;
+          dispatch({ type: "task/create" });
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    []
+  );
+
   return {
     activeList,
     changeActiveList,
@@ -191,6 +211,7 @@ const useTaskSource = (): {
     setActiveProject,
     openTaskForm,
     toggleTaskForm,
+    createTask,
   };
 };
 
