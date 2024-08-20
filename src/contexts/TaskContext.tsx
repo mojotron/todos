@@ -98,7 +98,7 @@ const useTaskSource = (): {
   setActiveProject: (project: string) => void;
   openTaskForm: boolean;
   toggleTaskForm: () => void;
-  createTask: (task: TaskType, assignment: ActionsType) => void;
+  createTask: (task: TaskType, assignment: TaskAssignment) => Promise<void>;
 } => {
   const [
     { projects, activeList, openProjectForm, activeProject, openTaskForm },
@@ -188,7 +188,9 @@ const useTaskSource = (): {
       try {
         const response = await axios.post(`/tasks/`, { ...task, assignment });
         if (response.data.status === "success") {
-          const { title } = response.data;
+          // const data = response.data;
+          console.log(response);
+
           dispatch({ type: "task/create" });
         }
       } catch (error) {

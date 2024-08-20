@@ -11,7 +11,7 @@ import TaskTypeCreator from "./TaskTypeCreator";
 import { TaskAssignment } from "../types/taskType";
 
 const TaskForm = () => {
-  const { toggleTaskForm, projects } = useTasks();
+  const { toggleTaskForm, projects, createTask } = useTasks();
   const [formData, setFormData] = useState<TaskType>({
     title: "",
     deadline: "",
@@ -26,9 +26,10 @@ const TaskForm = () => {
     checkbox: [],
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData, assignment);
+
+    await createTask(formData, assignment);
   };
 
   return (
@@ -82,7 +83,7 @@ const TaskForm = () => {
                   type="button"
                   key={project._id}
                   className={`border rounded-md px-2 py-0.5 ${
-                    project._id === formData._id
+                    project._id === formData.projectId
                       ? "border-green text-green"
                       : "border-white"
                   }`}
@@ -99,14 +100,14 @@ const TaskForm = () => {
               <button
                 type="button"
                 className={`border rounded-md px-2 py-0.5 ${
-                  formData._id === undefined
+                  formData.projectId === undefined
                     ? "border-green text-green"
                     : "border-white"
                 }`}
                 onClick={() =>
                   setFormData((oldValue) => ({
                     ...oldValue,
-                    _id: undefined,
+                    projectId: undefined,
                   }))
                 }
               >
