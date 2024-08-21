@@ -13,7 +13,7 @@ import TaskType, { TaskAssignment } from "../types/taskType";
 type StateType = {
   activeList: ActiveListType;
   openProjectForm: boolean;
-  tasks: [];
+  tasks: TaskType[];
   projects: ProjectType[];
   activeProject: ProjectType | undefined;
   openTaskForm: boolean;
@@ -31,7 +31,10 @@ type ActionsType =
       payload: { projectId: string; newProjectName: string };
     }
   | { type: "project/active"; payload: string | null }
-  | { type: "task/create" };
+  | {
+      type: "task/create";
+      payload: { task: TaskType; assignment: TaskAssignment };
+    };
 
 const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
@@ -79,7 +82,17 @@ const taskReducer = (state: StateType, action: ActionsType) => {
         ),
       };
     case "task/create":
-      return { ...state };
+      return {
+        ...state,
+        tasks: [
+          ...state.tasks,
+          {
+            ...action.payload.task,
+            assignment: { ...action.payload.assignment },
+          },
+        ] as TaskType[],
+        openTaskForm: false,
+      };
     default:
       return { ...state };
   }
@@ -189,9 +202,7 @@ const useTaskSource = (): {
         const response = await axios.post(`/tasks/`, { ...task, assignment });
         if (response.data.status === "success") {
           // const data = response.data;
-          console.log(response);
-
-          dispatch({ type: "task/create" });
+          dispatch({ type: "task/create", payload: { task, assignment } });
         }
       } catch (error) {
         throw error;

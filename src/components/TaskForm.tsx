@@ -16,7 +16,7 @@ const TaskForm = () => {
     title: "",
     deadline: "",
     priority: "low",
-    option: "text",
+    category: "text",
     projectId: undefined,
   });
 

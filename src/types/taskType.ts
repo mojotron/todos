@@ -17,7 +17,7 @@ export type TaskType = {
   title: string;
   deadline: undefined | string;
   priority: TaskPriorityType;
-  option: TaskOptionType;
+  category: TaskOptionType;
   projectId: undefined | string;
 };
 
