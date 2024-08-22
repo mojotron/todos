@@ -34,7 +34,8 @@ type ActionsType =
   | {
       type: "task/create";
       payload: { task: TaskType; assignment: TaskAssignment };
-    };
+    }
+  | { type: "task/getAll"; payload: TaskType[] };
 
 const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
@@ -93,6 +94,8 @@ const taskReducer = (state: StateType, action: ActionsType) => {
         ] as TaskType[],
         openTaskForm: false,
       };
+    case "task/getAll":
+      return { ...state, tasks: action.payload };
     default:
       return { ...state };
   }
@@ -110,11 +113,19 @@ const useTaskSource = (): {
   activeProject: ProjectType | undefined;
   setActiveProject: (project: string) => void;
   openTaskForm: boolean;
+  tasks: TaskType[];
   toggleTaskForm: () => void;
   createTask: (task: TaskType, assignment: TaskAssignment) => Promise<void>;
 } => {
   const [
-    { projects, activeList, openProjectForm, activeProject, openTaskForm },
+    {
+      projects,
+      activeList,
+      openProjectForm,
+      activeProject,
+      openTaskForm,
+      tasks,
+    },
     dispatch,
   ] = useReducer(taskReducer, {
     tasks: [],
@@ -131,6 +142,17 @@ const useTaskSource = (): {
       .then((response) => {
         if (response.data.status === "success") {
           dispatch({ type: "project/getAll", payload: response.data.projects });
+        }
+      })
+      .catch();
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("/tasks")
+      .then((response) => {
+        if (response.data.status === "success") {
+          dispatch({ type: "task/getAll", payload: response.data.tasks });
         }
       })
       .catch();
@@ -223,6 +245,7 @@ const useTaskSource = (): {
     activeProject,
     setActiveProject,
     openTaskForm,
+    tasks,
     toggleTaskForm,
     createTask,
   };

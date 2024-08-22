@@ -5,7 +5,7 @@ import ProjectDisplay from "./ProjectDisplay";
 import TaskForm from "./TaskForm";
 
 const TasksDashboard = () => {
-  const { openProjectForm, activeProject, openTaskForm } = useTasks();
+  const { openProjectForm, activeProject, openTaskForm, tasks } = useTasks();
   // for displaying project management controls
   // const defaultList = Object.keys(ActiveListDefaults).includes(activeList);
 
@@ -14,6 +14,22 @@ const TasksDashboard = () => {
       {openProjectForm && <ProjectForm />}
       {openTaskForm && <TaskForm />}
       {activeProject && <ProjectDisplay />}
+      <section>
+        <ul>
+          {tasks.map((task) => (
+            <li key={task._id}>
+              <article>
+                <header>
+                  <h2 className="font-display text-2xl text-white">
+                    {task.title}
+                  </h2>
+                </header>
+                <section></section>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </section>
     </section>
   );
 };
