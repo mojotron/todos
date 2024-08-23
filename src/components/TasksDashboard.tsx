@@ -3,6 +3,7 @@ import { useTasks } from "../hooks/useTasks";
 import ProjectForm from "./ProjectForm";
 import ProjectDisplay from "./ProjectDisplay";
 import TaskForm from "./TaskForm";
+import Task from "./Task";
 
 const TasksDashboard = () => {
   const { openProjectForm, activeProject, openTaskForm, tasks } = useTasks();
@@ -15,18 +16,9 @@ const TasksDashboard = () => {
       {openTaskForm && <TaskForm />}
       {activeProject && <ProjectDisplay />}
       <section>
-        <ul>
+        <ul className="space-y-4">
           {tasks.map((task) => (
-            <li key={task._id}>
-              <article>
-                <header>
-                  <h2 className="font-display text-2xl text-white">
-                    {task.title}
-                  </h2>
-                </header>
-                <section></section>
-              </article>
-            </li>
+            <Task key={task._id} data={task} />
           ))}
         </ul>
       </section>

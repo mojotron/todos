@@ -19,6 +19,7 @@ export type TaskType = {
   priority: TaskPriorityType;
   category: TaskOptionType;
   projectId: undefined | string;
+  assignment: TaskAssignment;
 };
 
 export default TaskType;
