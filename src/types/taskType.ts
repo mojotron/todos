@@ -20,6 +20,8 @@ export type TaskType = {
   category: TaskOptionType;
   projectId: undefined | string;
   assignment: TaskAssignment;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export default TaskType;

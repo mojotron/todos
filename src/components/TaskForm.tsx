@@ -18,6 +18,10 @@ const TaskForm = () => {
     priority: "low",
     category: "text",
     projectId: undefined,
+    createdAt: "",
+    updatedAt: "",
+    // TODO
+    assignment: { text: "", list: [], checkbox: [] },
   });
 
   const [assignment, setAssignment] = useState<TaskAssignment>({
