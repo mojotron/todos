@@ -18,8 +18,8 @@ const TaskForm = () => {
     priority: "low",
     category: "text",
     projectId: undefined,
-    createdAt: "",
-    updatedAt: "",
+    createdAt: new Date().toLocaleString(navigator.language),
+    updatedAt: new Date().toLocaleString(navigator.language),
     // TODO
     assignment: { text: "", list: [], checkbox: [] },
   });

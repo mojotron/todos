@@ -11,6 +11,8 @@ type PropsType = {
 const Task = ({ data }: PropsType) => {
   const [taskOption, setTaskOption] = useState<TaskOptionType>("text");
 
+  if (!data.assignment) return;
+
   return (
     <li>
       <article className="bg-gray-800">
