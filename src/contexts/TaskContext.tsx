@@ -17,6 +17,7 @@ type StateType = {
   projects: ProjectType[];
   activeProject: ProjectType | undefined;
   openTaskForm: boolean;
+  openTaskDeleteConfirm: string | null;
 };
 
 type ActionsType =
@@ -35,7 +36,8 @@ type ActionsType =
       type: "task/create";
       payload: { task: TaskType; assignment: TaskAssignment };
     }
-  | { type: "task/getAll"; payload: TaskType[] };
+  | { type: "task/getAll"; payload: TaskType[] }
+  | { type: "task/openTaskDeleteConfirm"; payload: string | null };
 
 const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
@@ -96,6 +98,8 @@ const taskReducer = (state: StateType, action: ActionsType) => {
       };
     case "task/getAll":
       return { ...state, tasks: action.payload };
+    case "task/openTaskDeleteConfirm":
+      return { ...state, openTaskDeleteConfirm: action.payload };
     default:
       return { ...state };
   }
@@ -116,6 +120,8 @@ const useTaskSource = (): {
   tasks: TaskType[];
   toggleTaskForm: () => void;
   createTask: (task: TaskType, assignment: TaskAssignment) => Promise<void>;
+  openTaskDeleteConfirm: null | string;
+  toggleDeleteConfirm: (taskId: string | null) => void;
 } => {
   const [
     {
@@ -125,6 +131,7 @@ const useTaskSource = (): {
       activeProject,
       openTaskForm,
       tasks,
+      openTaskDeleteConfirm,
     },
     dispatch,
   ] = useReducer(taskReducer, {
@@ -134,6 +141,7 @@ const useTaskSource = (): {
     openProjectForm: false,
     activeProject: undefined,
     openTaskForm: false,
+    openTaskDeleteConfirm: null,
   });
 
   useEffect(() => {
@@ -233,6 +241,10 @@ const useTaskSource = (): {
     []
   );
 
+  const toggleDeleteConfirm = useCallback((taskId: string | null) => {
+    dispatch({ type: "task/openTaskDeleteConfirm", payload: taskId });
+  }, []);
+
   return {
     activeList,
     changeActiveList,
@@ -248,6 +260,8 @@ const useTaskSource = (): {
     tasks,
     toggleTaskForm,
     createTask,
+    openTaskDeleteConfirm,
+    toggleDeleteConfirm,
   };
 };
 

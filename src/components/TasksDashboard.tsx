@@ -3,10 +3,10 @@ import { useTasks } from "../hooks/useTasks";
 import ProjectForm from "./ProjectForm";
 import ProjectDisplay from "./ProjectDisplay";
 import TaskForm from "./TaskForm";
-import Task from "./Task";
+import TaskList from "./TaskList";
 
 const TasksDashboard = () => {
-  const { openProjectForm, activeProject, openTaskForm, tasks } = useTasks();
+  const { openProjectForm, activeProject, openTaskForm } = useTasks();
   // for displaying project management controls
   // const defaultList = Object.keys(ActiveListDefaults).includes(activeList);
 
@@ -14,14 +14,9 @@ const TasksDashboard = () => {
     <section className="w-full p-4">
       {openProjectForm && <ProjectForm />}
       {openTaskForm && <TaskForm />}
+
       {activeProject && <ProjectDisplay />}
-      <section>
-        <ul className="space-y-4">
-          {tasks.map((task) => (
-            <Task key={task._id} data={task} />
-          ))}
-        </ul>
-      </section>
+      <TaskList />
     </section>
   );
 };

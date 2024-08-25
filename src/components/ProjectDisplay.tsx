@@ -24,7 +24,7 @@ const ProjectDisplay = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-8">
       {openConfirmBox && (
         <ConfirmBox
           text={`You are about to delete ${activeProject?.projectName} project?`}
