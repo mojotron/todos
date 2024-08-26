@@ -3,7 +3,8 @@ import Task from "./Task";
 import ConfirmBox from "./ConfirmBox";
 
 const TaskList = () => {
-  const { tasks, openTaskDeleteConfirm, toggleDeleteConfirm } = useTasks();
+  const { tasks, openTaskDeleteConfirm, toggleDeleteConfirm, deleteTask } =
+    useTasks();
 
   return (
     <section>
@@ -12,7 +13,7 @@ const TaskList = () => {
           text={`Are you sure you want to delete "${
             tasks.find((task) => task._id === openTaskDeleteConfirm)?.title
           }" task?`}
-          confirmHandler={() => {}}
+          confirmHandler={() => deleteTask(openTaskDeleteConfirm)}
           cancelHandler={() => toggleDeleteConfirm(null)}
         />
       )}

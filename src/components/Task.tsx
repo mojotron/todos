@@ -13,7 +13,7 @@ type PropsType = {
 
 const Task = ({ data }: PropsType) => {
   const [taskOption, setTaskOption] = useState<TaskOptionType>("text");
-  const { toggleDeleteConfirm } = useTasks();
+  const { toggleDeleteConfirm, toggleEditTask } = useTasks();
 
   if (!data.assignment) return;
 
@@ -51,7 +51,7 @@ const Task = ({ data }: PropsType) => {
             <div className="flex gap-[2px]">
               <button
                 title="edit task"
-                onClick={() => {}}
+                onClick={() => toggleEditTask(data._id as string)}
                 className="flex items-center gap-[2px] text-gray-300 hover:text-green"
               >
                 <BiEdit />

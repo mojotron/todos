@@ -11,23 +11,32 @@ import TaskTypeCreator from "./TaskTypeCreator";
 import { TaskAssignment } from "../types/taskType";
 
 const TaskForm = () => {
-  const { toggleTaskForm, projects, createTask } = useTasks();
-  const [formData, setFormData] = useState<TaskType>({
-    title: "",
-    deadline: "",
-    priority: "low",
-    category: "text",
-    projectId: undefined,
-    createdAt: new Date().toLocaleString(navigator.language),
-    updatedAt: new Date().toLocaleString(navigator.language),
-    // TODO
-    assignment: { text: "", list: [], checkbox: [] },
+  const { toggleTaskForm, projects, createTask, activeEditTask, tasks } =
+    useTasks();
+  const [formData, setFormData] = useState<TaskType>(() => {
+    if (activeEditTask === null) {
+      return {
+        title: "",
+        deadline: "",
+        priority: "low",
+        category: "text",
+        projectId: undefined,
+        createdAt: new Date().toLocaleString(navigator.language),
+        updatedAt: new Date().toLocaleString(navigator.language),
+        assignment: { text: "", list: [], checkbox: [] },
+      };
+    } else {
+      return tasks.find((task) => task._id === activeEditTask) as TaskType;
+    }
   });
 
-  const [assignment, setAssignment] = useState<TaskAssignment>({
-    text: "",
-    list: [],
-    checkbox: [],
+  const [assignment, setAssignment] = useState<TaskAssignment>(() => {
+    if (activeEditTask === null) {
+      return { text: "", list: [], checkbox: [] };
+    } else {
+      return tasks.find((task) => task._id === activeEditTask)
+        ?.assignment as TaskAssignment;
+    }
   });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

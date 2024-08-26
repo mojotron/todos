@@ -18,6 +18,7 @@ type StateType = {
   activeProject: ProjectType | undefined;
   openTaskForm: boolean;
   openTaskDeleteConfirm: string | null;
+  activeEditTask: string | null;
 };
 
 type ActionsType =
@@ -37,7 +38,9 @@ type ActionsType =
       payload: { task: TaskType; assignment: TaskAssignment };
     }
   | { type: "task/getAll"; payload: TaskType[] }
-  | { type: "task/openTaskDeleteConfirm"; payload: string | null };
+  | { type: "task/openTaskDeleteConfirm"; payload: string | null }
+  | { type: "task/delete"; payload: string }
+  | { type: "toggle/editTask"; payload: string | null };
 
 const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
@@ -46,7 +49,11 @@ const taskReducer = (state: StateType, action: ActionsType) => {
     case "toggle/projectForm":
       return { ...state, openProjectForm: !state.openProjectForm };
     case "toggle/taskForm":
-      return { ...state, openTaskForm: !state.openTaskForm };
+      return {
+        ...state,
+        openTaskForm: !state.openTaskForm,
+        activeEditTask: null,
+      };
     case "project/getAll":
       return { ...state, projects: action.payload };
     case "project/create":
@@ -100,6 +107,18 @@ const taskReducer = (state: StateType, action: ActionsType) => {
       return { ...state, tasks: action.payload };
     case "task/openTaskDeleteConfirm":
       return { ...state, openTaskDeleteConfirm: action.payload };
+    case "task/delete":
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => task._id !== action.payload),
+        openTaskDeleteConfirm: null,
+      };
+    case "toggle/editTask":
+      return {
+        ...state,
+        activEditTask: action.payload,
+        openTaskForm: action.payload === null ? false : true,
+      };
     default:
       return { ...state };
   }
@@ -122,6 +141,10 @@ const useTaskSource = (): {
   createTask: (task: TaskType, assignment: TaskAssignment) => Promise<void>;
   openTaskDeleteConfirm: null | string;
   toggleDeleteConfirm: (taskId: string | null) => void;
+  deleteTask: (taskId: string) => void;
+  activeEditTask: string | null;
+  toggleEditTask: (taskId: string | null) => void;
+  editTask: (task: TaskType, assignment: TaskAssignment) => Promise<void>;
 } => {
   const [
     {
@@ -132,6 +155,7 @@ const useTaskSource = (): {
       openTaskForm,
       tasks,
       openTaskDeleteConfirm,
+      activeEditTask,
     },
     dispatch,
   ] = useReducer(taskReducer, {
@@ -142,6 +166,7 @@ const useTaskSource = (): {
     activeProject: undefined,
     openTaskForm: false,
     openTaskDeleteConfirm: null,
+    activeEditTask: null,
   });
 
   useEffect(() => {
@@ -241,8 +266,40 @@ const useTaskSource = (): {
     []
   );
 
+  const editTask = useCallback(
+    async (task: TaskType, assignment: TaskAssignment) => {
+      try {
+        const response = await axios.patch(`/tasks/${activeEditTask}`, {
+          ...task,
+          assignment,
+        });
+        if (response.data.status === "success") {
+          console.log("edited");
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [activeEditTask]
+  );
+
   const toggleDeleteConfirm = useCallback((taskId: string | null) => {
     dispatch({ type: "task/openTaskDeleteConfirm", payload: taskId });
+  }, []);
+
+  const deleteTask = useCallback(async (taskId: string) => {
+    try {
+      const response = await axios.delete(`/tasks/${taskId}`);
+      if (response.data.status === "success") {
+        dispatch({ type: "task/delete", payload: taskId });
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
+  const toggleEditTask = useCallback((taskId: string | null) => {
+    dispatch({ type: "toggle/editTask", payload: taskId });
   }, []);
 
   return {
@@ -262,6 +319,10 @@ const useTaskSource = (): {
     createTask,
     openTaskDeleteConfirm,
     toggleDeleteConfirm,
+    deleteTask,
+    activeEditTask,
+    toggleEditTask,
+    editTask,
   };
 };
 
