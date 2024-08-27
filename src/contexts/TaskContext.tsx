@@ -40,7 +40,11 @@ type ActionsType =
   | { type: "task/getAll"; payload: TaskType[] }
   | { type: "task/openTaskDeleteConfirm"; payload: string | null }
   | { type: "task/delete"; payload: string }
-  | { type: "toggle/editTask"; payload: string | null };
+  | { type: "toggle/editTask"; payload: string | null }
+  | {
+      type: "task/edit";
+      payload: { task: TaskType; assignment: TaskAssignment };
+    };
 
 const taskReducer = (state: StateType, action: ActionsType) => {
   switch (action.type) {
@@ -116,8 +120,22 @@ const taskReducer = (state: StateType, action: ActionsType) => {
     case "toggle/editTask":
       return {
         ...state,
-        activEditTask: action.payload,
+        activeEditTask: action.payload,
         openTaskForm: action.payload === null ? false : true,
+      };
+    case "task/edit":
+      return {
+        ...state,
+        tasks: state.tasks.map((task) =>
+          task._id === action.payload.task._id
+            ? {
+                ...action.payload.task,
+                assignment: { ...action.payload.assignment },
+              }
+            : task
+        ),
+        openTaskForm: false,
+        activeTaskEdit: null,
       };
     default:
       return { ...state };
@@ -274,7 +292,7 @@ const useTaskSource = (): {
           assignment,
         });
         if (response.data.status === "success") {
-          console.log("edited");
+          dispatch({ type: "task/edit", payload: { task, assignment } });
         }
       } catch (error) {
         throw error;

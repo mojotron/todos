@@ -11,8 +11,14 @@ import TaskTypeCreator from "./TaskTypeCreator";
 import { TaskAssignment } from "../types/taskType";
 
 const TaskForm = () => {
-  const { toggleTaskForm, projects, createTask, activeEditTask, tasks } =
-    useTasks();
+  const {
+    toggleTaskForm,
+    projects,
+    createTask,
+    activeEditTask,
+    tasks,
+    editTask,
+  } = useTasks();
   const [formData, setFormData] = useState<TaskType>(() => {
     if (activeEditTask === null) {
       return {
@@ -41,8 +47,11 @@ const TaskForm = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    await createTask(formData, assignment);
+    if (activeEditTask) {
+      await editTask(formData, assignment);
+    } else {
+      await createTask(formData, assignment);
+    }
   };
 
   return (
@@ -158,7 +167,7 @@ const TaskForm = () => {
             setAssignment={setAssignment}
           />
 
-          <Button>Create Task</Button>
+          <Button>{activeEditTask ? "Update" : "Create"} Task</Button>
         </form>
       </div>
     </OverlayWrapper>
