@@ -1,13 +1,18 @@
 // icons
-import { BiEdit, BiTrash } from "react-icons/bi";
+import { BiEdit, BiTrash, BiXCircle } from "react-icons/bi";
 import { useTasks } from "../hooks/useTasks";
 import { useState } from "react";
 import ConfirmBox from "./ConfirmBox";
 import ProjectForm from "./ProjectForm";
 
 const ProjectDisplay = () => {
-  const { activeProject, openProjectForm, deleteProject, toggleProjectForm } =
-    useTasks();
+  const {
+    activeProject,
+    openProjectForm,
+    deleteProject,
+    toggleProjectForm,
+    setActiveProject,
+  } = useTasks();
 
   const [openConfirmBox, setOpenConfirmBox] = useState(false);
 
@@ -41,6 +46,13 @@ const ProjectDisplay = () => {
         </h2>
 
         <div>
+          <button
+            onClick={() => setActiveProject(undefined)}
+            className="flex items-center gap-[2px] text-gray-300 hover:text-green "
+          >
+            <BiXCircle />
+            <span>close project</span>
+          </button>
           <button
             onClick={toggleProjectForm}
             className="flex items-center gap-[2px] text-gray-300 hover:text-green "

@@ -16,6 +16,7 @@ const TasksDashboard = () => {
       {openTaskForm && <TaskForm />}
 
       {activeProject && <ProjectDisplay />}
+
       <TaskList />
     </section>
   );

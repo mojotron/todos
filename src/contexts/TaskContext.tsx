@@ -32,7 +32,7 @@ type ActionsType =
       type: "project/edit";
       payload: { projectId: string; newProjectName: string };
     }
-  | { type: "project/active"; payload: string | null }
+  | { type: "project/active"; payload: string | undefined }
   | {
       type: "task/create";
       payload: { task: TaskType; assignment: TaskAssignment };
@@ -152,7 +152,7 @@ const useTaskSource = (): {
   deleteProject: (projectId: string) => void;
   editProject: (projectId: string, newProjectName: string) => void;
   activeProject: ProjectType | undefined;
-  setActiveProject: (project: string) => void;
+  setActiveProject: (project: string | undefined) => void;
   openTaskForm: boolean;
   tasks: TaskType[];
   toggleTaskForm: () => void;
@@ -265,7 +265,7 @@ const useTaskSource = (): {
     dispatch({ type: "toggle/taskForm" });
   }, []);
 
-  const setActiveProject = useCallback((project: string) => {
+  const setActiveProject = useCallback((project: string | undefined) => {
     dispatch({ type: "project/active", payload: project });
   }, []);
 

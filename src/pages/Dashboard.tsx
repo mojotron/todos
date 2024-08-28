@@ -2,7 +2,7 @@
 import { FaFolderOpen as IconFolder } from "react-icons/fa6";
 import { FaTasks as IconTasks } from "react-icons/fa";
 // components
-
+import { ActiveListDefaults } from "../types/activeListType";
 import AsideButton from "../ui/AsideButton";
 import ProjectsList from "../components/ProjectsList";
 import TasksDashboard from "../components/TasksDashboard";
@@ -10,7 +10,8 @@ import TasksDashboard from "../components/TasksDashboard";
 import { useTasks } from "../hooks/useTasks";
 
 const Dashboard = () => {
-  const { toggleProjectForm, toggleTaskForm } = useTasks();
+  const { toggleProjectForm, toggleTaskForm, changeActiveList, activeList } =
+    useTasks();
 
   return (
     <div className="flex w-full">
@@ -22,9 +23,17 @@ const Dashboard = () => {
             <span className="relative top-[2px]">tasks</span>
           </h3>
           <ul className="text-white">
-            <li>all tasks</li>
-            <li>today</li>
-            <li>7 days</li>
+            {Object.keys(ActiveListDefaults).map((ele) => (
+              <li
+                className={`${
+                  ele === activeList ? "text-green" : "text-white"
+                } cursor-pointer`}
+                key={ele}
+                onClick={() => changeActiveList(ele)}
+              >
+                {ele}
+              </li>
+            ))}
           </ul>
           <AsideButton text="new task" clickHandler={toggleTaskForm} />
         </div>
