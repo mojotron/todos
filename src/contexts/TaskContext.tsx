@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useReducer,
+  useMemo,
 } from "react";
 import axios from "axios";
 import type ProjectType from "../types/projectType";
@@ -154,7 +155,7 @@ const useTaskSource = (): {
   activeProject: ProjectType | undefined;
   setActiveProject: (project: string | undefined) => void;
   openTaskForm: boolean;
-  tasks: TaskType[];
+  filteredTasks: TaskType[];
   toggleTaskForm: () => void;
   createTask: (task: TaskType, assignment: TaskAssignment) => Promise<void>;
   openTaskDeleteConfirm: null | string;
@@ -320,6 +321,11 @@ const useTaskSource = (): {
     dispatch({ type: "toggle/editTask", payload: taskId });
   }, []);
 
+  const filteredTasks = useMemo(() => {
+    const filteredByProject = tasks;
+    return filteredByProject;
+  }, [tasks, activeProject]);
+
   return {
     activeList,
     changeActiveList,
@@ -332,7 +338,7 @@ const useTaskSource = (): {
     activeProject,
     setActiveProject,
     openTaskForm,
-    tasks,
+    filteredTasks,
     toggleTaskForm,
     createTask,
     openTaskDeleteConfirm,
