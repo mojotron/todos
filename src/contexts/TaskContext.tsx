@@ -322,8 +322,13 @@ const useTaskSource = (): {
   }, []);
 
   const filteredTasks = useMemo(() => {
-    const filteredByProject = tasks;
-    return filteredByProject;
+    let filteredTasks = [...tasks];
+    if (activeProject) {
+      filteredTasks = filteredTasks.filter(
+        (task) => task._id === activeProject?._id
+      );
+    }
+    return filteredTasks;
   }, [tasks, activeProject]);
 
   return {

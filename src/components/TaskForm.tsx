@@ -16,7 +16,7 @@ const TaskForm = () => {
     projects,
     createTask,
     activeEditTask,
-    tasks,
+    filteredTasks,
     editTask,
   } = useTasks();
   const [formData, setFormData] = useState<TaskType>(() => {
@@ -32,7 +32,9 @@ const TaskForm = () => {
         assignment: { text: "", list: [], checkbox: [] },
       };
     } else {
-      return tasks.find((task) => task._id === activeEditTask) as TaskType;
+      return filteredTasks.find(
+        (task) => task._id === activeEditTask
+      ) as TaskType;
     }
   });
 
@@ -40,7 +42,7 @@ const TaskForm = () => {
     if (activeEditTask === null) {
       return { text: "", list: [], checkbox: [] };
     } else {
-      return tasks.find((task) => task._id === activeEditTask)
+      return filteredTasks.find((task) => task._id === activeEditTask)
         ?.assignment as TaskAssignment;
     }
   });
