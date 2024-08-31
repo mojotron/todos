@@ -10,6 +10,8 @@ import axios from "axios";
 import type ProjectType from "../types/projectType";
 import { ActiveListType, ActiveListDefaults } from "../types/activeListType";
 import TaskType, { TaskAssignment } from "../types/taskType";
+import getDeadlineDistance from "../utils/getDeadlineDistance";
+import isToday from "../utils/isToday";
 
 type StateType = {
   activeList: ActiveListType;
@@ -325,11 +327,29 @@ const useTaskSource = (): {
     let filteredTasks = [...tasks];
     if (activeProject) {
       filteredTasks = filteredTasks.filter(
-        (task) => task._id === activeProject?._id
+        (task) => task.projectId === activeProject?._id
       );
     }
+
+    if (activeList === "week") {
+      filteredTasks = filteredTasks.filter((task) => {
+        if (task.deadline) {
+          const { passed, distance } = getDeadlineDistance(task.deadline);
+          if (passed === false && distance.match(/^[1-7]\sdays$/)) {
+            return task;
+          }
+        }
+      });
+    }
+    if (activeList === "today") {
+      filteredTasks = filteredTasks.filter((task) => {
+        if (task.deadline && isToday(new Date(task.deadline))) {
+          return task;
+        }
+      });
+    }
     return filteredTasks;
-  }, [tasks, activeProject]);
+  }, [tasks, activeProject, activeList]);
 
   return {
     activeList,
