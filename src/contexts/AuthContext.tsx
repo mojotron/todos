@@ -18,7 +18,6 @@ const useAuthSource = (): {
 } => {
   const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState<null | UserType>(null);
-  console.log("context", isAuth, user);
 
   // check if token is valid
   useEffect(() => {
@@ -30,8 +29,7 @@ const useAuthSource = (): {
           setUser(response.data.user);
         }
       })
-      .catch((error) => {
-        console.log(error.response.data);
+      .catch(() => {
         setIsAuth(false);
         setUser(null);
       });

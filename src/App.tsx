@@ -6,6 +6,7 @@ import MainLayout from "./layouts/MainLayout";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
+import HomePage from "./pages/HomePage";
 // components
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import TaskContextProvider from "./contexts/TaskContext";
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainLayout />,
     children: [
-      { index: true, element: <h1>home</h1> },
+      { index: true, element: <HomePage /> },
       { path: "/signup", element: <SignupPage /> },
       { path: "/login", element: <LoginPage /> },
       {
