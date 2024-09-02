@@ -3,10 +3,8 @@ import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 const ProtectedRoutes = ({ children }: { children: ReactNode }) => {
-  const { isAuth, user } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-
-  console.log("protected", isAuth, user);
 
   useEffect(() => {
     if (user === null) {
